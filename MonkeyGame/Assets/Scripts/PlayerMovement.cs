@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("RayCast, Points"), Space(3)]
     public Transform Feet;
-    public Vector2 LandingRaycast;
 
     [Header("RayCast, Layers"), Space(3)]
     public LayerMask GroundLayer;
@@ -128,8 +127,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         BoxCollider2D Bc = GetComponent<BoxCollider2D>();
-        Gizmos.DrawWireCube(Feet.position, new Vector2(Bc.size.x - 0.05f, 0.2f));
-        Gizmos.DrawWireCube(Feet.position, LandingRaycast);
+        Gizmos.DrawWireCube(Feet.position, new Vector2(Bc.size.x / 2 - 0.05f, 0.2f));
     }
     
     
