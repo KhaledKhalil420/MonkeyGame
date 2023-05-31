@@ -20,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Physics, Forces"), Space(3)]
     //Speed
     public float Speed;
-    public float SpeedMultiplier = 1;
 
     //Jump
     public float JumpForce;
@@ -100,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyMovement()
     {
-        Rb.velocity = new Vector2(MovementX * Speed * SpeedMultiplier * Time.fixedDeltaTime, Rb.velocity.y);
+        Rb.velocity = new Vector2(MovementX * Speed * Time.fixedDeltaTime, Rb.velocity.y);
     }
 
     public void Jump(float JumpForce)
