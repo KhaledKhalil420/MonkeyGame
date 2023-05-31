@@ -42,10 +42,10 @@ public class PlayerMovement : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
     }
 
+
     void Update()
     {
         if(Instance == null) Instance = this;
-
         
         Inputs();
         CayoteJump();
@@ -59,8 +59,6 @@ public class PlayerMovement : MonoBehaviour
     {
         ApplyMovement();   
     }
-
-
     
 
     void Inputs()
@@ -87,8 +85,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
-    
         
     void SetAnimations()
     {
@@ -102,13 +98,10 @@ public class PlayerMovement : MonoBehaviour
         transform.eulerAngles = new Vector2(transform.eulerAngles.x, Angle);
     }
 
-
     void ApplyMovement()
     {
         Rb.velocity = new Vector2(MovementX * Speed * SpeedMultiplier * Time.fixedDeltaTime, Rb.velocity.y);
     }
-
-
 
     public void Jump(float JumpForce)
     {
@@ -131,8 +124,6 @@ public class PlayerMovement : MonoBehaviour
 
         CanCayoteJump = CayoteTimer > 0;
     }
-
-
 
 
     private void OnDrawGizmosSelected()
