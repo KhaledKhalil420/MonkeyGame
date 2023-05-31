@@ -177,6 +177,42 @@ public class lobbyManager : MonoBehaviour
     }
 
 
+    public async void joinRandomRoom()
+    {
+        try
+        {
+            UpdatePlayerOptions playerOptions = new UpdatePlayerOptions();
+            playerOptions.Data = new Dictionary<string, PlayerDataObject>()
+            {
+                {
+                    "playerName", new PlayerDataObject(visibility: PlayerDataObject.VisibilityOptions.Member, value: playerName)
+                }
+            };
+
+            Lobby joinedLobby = await Lobbies.Instance.QuickJoinLobbyAsync();
+            string playerId = AuthenticationService.Instance.PlayerId;
+            joinedLobby = await LobbyService.Instance.UpdatePlayerAsync(joinedLobby.Id, playerId, playerOptions);
+            string JoinCode = joinedLobby.Data["RelayCode"].Value;
+            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(JoinCode);
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData(
+                joinAllocation.RelayServer.IpV4,
+                (ushort)joinAllocation.RelayServer.Port,
+                joinAllocation.AllocationIdBytes,
+                joinAllocation.Key,
+                joinAllocation.ConnectionData,
+                joinAllocation.HostConnectionData
+            );
+            currentLobby = joinedLobby;
+            NetworkManager.Singleton.StartClient();
+            Debug.Log(joinedLobby.Name + JoinCode);
+
+        }
+        catch
+        {
+
+        }
+    }
+
     public async void ListLobby()
     {
         try
@@ -189,12 +225,13 @@ public class lobbyManager : MonoBehaviour
         roomsList.Clear();
 
         QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync();
+        
 
         Debug.Log("Lobbies found: " + queryResponse.Results.Count);
         foreach(Lobby lobby in queryResponse.Results)
         {
             GameObject room = Instantiate(roomObject, roomsHolder);
-            room.GetComponent<RoomObject>().lobby = lobby;
+            //room.GetComponent<RoomObject>().lobby = lobby;
             roomsList.Add(room);
         }
         }
