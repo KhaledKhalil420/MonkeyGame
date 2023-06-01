@@ -20,23 +20,15 @@ public class CameraFollow : NetworkBehaviour
 
     private  void Start()
     {
-        gameObject.SetActive(!IsClient);
-        Players = GameObject.FindGameObjectsWithTag("Player");
-        Anim = GetComponent<Animator>();
-    }
-
-    public override void OnNetworkSpawn()
-    {   
-        foreach(GameObject player in Players)
+        if(transform.parent.GetComponent<PlayerMovement>().IsOwner)
         {
-            if(player.GetComponent<NetworkObject>().IsLocalPlayer)
-            {
-                Target = player.transform;
-            }
+            gameObject.SetActive(true);
         }
-        
-        base.OnNetworkSpawn();
-    }
+        else 
+        {
+            gameObject.SetActive(false);
+        }
+    }   
 
     private void Update()
     {
@@ -47,13 +39,26 @@ public class CameraFollow : NetworkBehaviour
             StartCoroutine(ShakeCamera(ShakeStrength, ShakeTime));
         }
 
+        if(Target != null) 
+        return;
+
+        transform.parent = null;
+        GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach(GameObject P in Players)
+        {
+            if(P.GetComponent<PlayerMovement>().IsOwner)
+            Target = P.transform;
+        }
+
     }
 
 
 
     private void FixedUpdate()
     {
-        transform.position = Vector2.Lerp(transform.position, Target.position, FollowSmoothness * Time.fixedDeltaTime);
+        if(Target != null)
+        transform.position = Vector3.Lerp(transform.position, Target.position + Offset, FollowSmoothness * Time.fixedDeltaTime);
     }
         
     public IEnumerator ShakeCamera(float Strength, float Duration)
