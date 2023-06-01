@@ -184,7 +184,7 @@ MonoBehaviour:
   IsWalled: 0
   IsReadyToJump: 0
   Feet: {fileID: 9006669323763318050}
-  WallPoint: {fileID: 0}
+  WallPoint: {fileID: 2521044022743215492}
   WallJumpDetection: {x: 0.38, y: 0.9}
   GroundLayer:
     serializedVersion: 2
@@ -194,12 +194,12 @@ MonoBehaviour:
   Speed: 350
   JumpForce: 500
   JumpCoolDown: 0.25
-  WallJumpXForce: 300
-  WallJumpYForce: 350
+  WallJumpXForce: 400
+  WallJumpYForce: 600
   WallJumpTime: 0.1
   GravityOnGround: 3
-  GravityLowJump: 4
-  GravityOnWall: 1
+  GravityLowJump: 3
+  GravityOnWall: 3
   CayoteJumpCoolDown: 0.1
   IsOffline: 1
 --- !u!232 &2570489386646356084
