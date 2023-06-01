@@ -1997,7 +1997,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 835b969893e462f45a5865957baa594c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 7486537826405860106, guid: 90bbd78298a752848837f58db4ee4d41, type: 3}
+  playerPrefab: {fileID: 8256972541847083443, guid: 4f131e29c30d20342b56befd62c040c1, type: 3}
   spawnPoint:
   - {fileID: 1863356347}
   - {fileID: 797059167}
