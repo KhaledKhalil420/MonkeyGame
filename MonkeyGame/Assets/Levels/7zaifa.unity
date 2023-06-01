@@ -1016,8 +1016,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ae3553e27098a846bdf4ec0d5ddd521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameStatsText: {fileID: 1239626628}
-  timerText: {fileID: 1549435539}
+  gameStatsText: {fileID: 1549435539}
+  timerText: {fileID: 1239626628}
   maxStartTime: 5
   minPlayersCount: 2
 --- !u!1 &942375019

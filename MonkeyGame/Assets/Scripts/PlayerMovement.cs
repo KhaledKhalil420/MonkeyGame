@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("RayCast, Layers"), Space(3)]
     public LayerMask GroundLayer;
-    public float MovementX;
+    public float MovementX, LastDirection;
 
     [Header("Physics, Forces"), Space(3)]
     //Speed
@@ -55,13 +55,22 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(GetComponent<PlayerVine>().IsAddingForce) 
+        return;
+
         ApplyMovement();   
     }
     
 
     void Inputs()
     {
+        if(GetComponent<PlayerVine>().IsAddingForce) 
+        return;
+        
         MovementX = Input.GetAxisRaw("Horizontal");
+        if(MovementX == 1) LastDirection = 1;
+        if(MovementX == -1) LastDirection = -1; 
+        
 
         if(Input.GetButtonDown("Jump") & IsGrounded & CanJump | Input.GetButtonDown("Jump") & CanJump & CanCayoteJump)
         {
