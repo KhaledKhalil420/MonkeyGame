@@ -1,0 +1,74 @@
+using Unity.Netcode;
+using UnityEngine;
+using System.Collections;
+
+public class CameraFollow : NetworkBehaviour
+{
+    public static CameraFollow Instance;
+
+    [Header("Follow"), Space(10)]
+    public float FollowSmoothness;
+    public Vector3 Offset;
+    private GameObject[] Players;
+    private Transform Target;
+    private Animator Anim;
+
+    [Header("CameraShake"), Space(10)]
+    public float ShakeStrength;
+    public float ShakeTime;
+    private Transform Cam;
+
+    private  void Start()
+    {
+        gameObject.SetActive(!IsClient);
+        Players = GameObject.FindGameObjectsWithTag("Player");
+        Anim = GetComponent<Animator>();
+    }
+
+    public override void OnNetworkSpawn()
+    {   
+        foreach(GameObject player in Players)
+        {
+            if(player.GetComponent<NetworkObject>().IsLocalPlayer)
+            {
+                Target = player.transform;
+            }
+        }
+        
+        base.OnNetworkSpawn();
+    }
+
+    private void Update()
+    {
+        if(Instance == null) Instance = this;
+
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            StartCoroutine(ShakeCamera(ShakeStrength, ShakeTime));
+        }
+
+    }
+
+
+
+    private void FixedUpdate()
+    {
+        transform.position = Vector2.Lerp(transform.position, Target.position, FollowSmoothness * Time.fixedDeltaTime);
+    }
+        
+    public IEnumerator ShakeCamera(float Strength, float Duration)
+    {
+        float ElapsedTime = 0;
+        Vector3 OriginalPos = Cam.localPosition;
+
+        while(ElapsedTime < Duration)
+        {
+
+            Cam.localPosition = new Vector3(Random.Range(-1, 1) * Strength, Random.Range(-1, 1) * Strength, -11);
+            ElapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Cam.localPosition = OriginalPos;
+    }
+}
