@@ -34,7 +34,7 @@ public class roomManager : MonoBehaviour
         gameStatsText.gameObject.SetActive(true);
 
         if(!NetworkManager.Singleton.IsHost) return;
-
+        
         if(NetworkManager.Singleton.ConnectedClients.Count < minPlayersCount)
         {
             gameStatsText.text = "players : " + NetworkManager.Singleton.ConnectedClients.Count + " / 2";
