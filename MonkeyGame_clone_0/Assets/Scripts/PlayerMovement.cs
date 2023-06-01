@@ -1,16 +1,21 @@
+using Unity.Netcode;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     public static PlayerMovement Instance;
 
     [Header("Physics, Jump"), Space(3)]                               
     bool CanJump = true; 
-    public bool IsGrounded, IsReadyToJump;
+    public bool IsGrounded, IsWalled, IsReadyToJump;
+    private bool DoingWallForce;
+
 
     [Header("RayCast, Points"), Space(3)]
     public Transform Feet;
+    public Transform WallPoint;
+    public Vector2 WallJumpDetection;
 
     [Header("RayCast, Layers"), Space(3)]
     public LayerMask GroundLayer;
@@ -23,6 +28,11 @@ public class PlayerMovement : MonoBehaviour
     //Jump
     public float JumpForce;
     public float JumpCoolDown;
+    public float WallJumpXForce, WallJumpYForce;
+    public float WallJumpTime;
+
+    [Header("GameFeel, Gravity")]
+    public float GravityOnGround, GravityLowJump, GravityOnWall;
 
     [Header("Gamefeel, CayoteJump"), Space(3)]
     public float CayoteJumpCoolDown;
@@ -33,16 +43,21 @@ public class PlayerMovement : MonoBehaviour
     Animator Anim;
     Rigidbody2D Rb;       
 
+    [SerializeField] private bool IsOffline;
+
 
     void Start()
     {
         Anim = GetComponentInChildren<Animator>();
         Rb = GetComponent<Rigidbody2D>();
+        
     }
 
 
     void Update()
     {
+        if(!IsClient & !IsOffline) return;
+
         if(Instance == null) Instance = this;
         
         Inputs();
@@ -55,21 +70,17 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(GetComponent<PlayerVine>().IsAddingForce) 
-        return;
-
         ApplyMovement();   
+        WallJump();
     }
     
 
     void Inputs()
-    {
-        if(GetComponent<PlayerVine>().IsAddingForce) 
-        return;
-        
+    {   
         MovementX = Input.GetAxisRaw("Horizontal");
-        if(MovementX == 1) LastDirection = 1;
-        if(MovementX == -1) LastDirection = -1; 
+        
+        if(MovementX == 1 & !DoingWallForce) LastDirection = 1;
+        if(MovementX == -1 & !DoingWallForce) LastDirection = -1; 
         
 
         if(Input.GetButtonDown("Jump") & IsGrounded & CanJump | Input.GetButtonDown("Jump") & CanJump & CanCayoteJump)
@@ -79,16 +90,21 @@ public class PlayerMovement : MonoBehaviour
             Invoke(nameof(GetReadyToJump), JumpCoolDown);
         }
 
+        if(Input.GetButtonDown("Jump") & IsWalled & !IsGrounded & MovementX != 0 & !DoingWallForce)
+        {
+            StartCoroutine(WallForce());
+        }
+
         if(Input.GetButtonUp("Jump"))
         {
             if(Rb.velocity.y > 0)
             {
                 Rb.velocity = new Vector2(Rb.velocity.x, 0);
-                Rb.gravityScale = 3;
+                Rb.gravityScale = GravityLowJump;
             }
             else if(Rb.velocity.y < 0)
             {
-                Rb.gravityScale = 3;
+                Rb.gravityScale = GravityLowJump;
             }
         }
     }
@@ -107,6 +123,7 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyMovement()
     {
+        if(!DoingWallForce)
         Rb.velocity = new Vector2(MovementX * Speed * Time.fixedDeltaTime, Rb.velocity.y);
     }
 
@@ -114,6 +131,44 @@ public class PlayerMovement : MonoBehaviour
     {
         Rb.velocity = new Vector2(Rb.velocity.x, 0);
         Rb.velocity = new Vector2(Rb.velocity.x, JumpForce * Time.fixedDeltaTime);
+    }
+
+    public void WallJump()
+    {
+        bool CanChangeGravity = new();
+        if(IsWalled & !IsGrounded & MovementX != 0 )
+        {
+            Rb.gravityScale = GravityOnWall;
+            CanChangeGravity = true;
+        }
+        else if(!IsWalled & IsGrounded & CanChangeGravity)
+        {
+            Rb.gravityScale = GravityOnGround;
+            CanChangeGravity = false;
+        }
+        
+        if(DoingWallForce & IsWalled)
+        {
+            Rb.velocity = new Vector2(-LastDirection * WallJumpXForce * Time.fixedDeltaTime, WallJumpYForce * Time.fixedDeltaTime);
+        }
+
+        else if(DoingWallForce & !IsWalled)
+        {
+            bool FlipS = (LastDirection == 1 ? true : false);
+            float Angle = (FlipS ? 180 : 0);
+            LastDirection = (FlipS ? -1 : 1);
+
+            transform.eulerAngles = new Vector3(0, Angle, 0);
+        }
+    }
+
+    IEnumerator WallForce()
+    {
+        DoingWallForce = true;
+
+        yield return new WaitForSeconds(WallJumpTime);
+        
+        DoingWallForce = false;
     }
     
     void GetReadyToJump()
@@ -136,16 +191,19 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         BoxCollider2D Bc = GetComponent<BoxCollider2D>();
+
         Gizmos.DrawWireCube(Feet.position, new Vector2(Bc.size.x / 2 - 0.05f, 0.2f));
+        Gizmos.DrawWireCube(WallPoint.position, WallJumpDetection);
     }
     
     
     void DrawRayCasts()
     {
         BoxCollider2D Bc = GetComponent<BoxCollider2D>();
-        Vector2 GroundCheckSize = new Vector2(Bc.size.x - 0.05f, 0.2f);
+        Vector2 GroundCheckSize = new Vector2(Bc.size.x / 2 - 0.05f, 0.2f);
         IsGrounded = Physics2D.OverlapBox(Feet.position, GroundCheckSize, 0, GroundLayer);
+        IsWalled = Physics2D.OverlapBox(WallPoint.position, WallJumpDetection, 0, GroundLayer);
 
-        if(IsGrounded) Rb.gravityScale = 2;
+        if(IsGrounded) Rb.gravityScale = GravityOnGround;
     }
 }

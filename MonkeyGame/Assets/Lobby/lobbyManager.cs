@@ -33,7 +33,7 @@ public class lobbyManager : MonoBehaviour
     
     List<GameObject> players = new List<GameObject>();
 
-    float GetLobbyTime = 5;
+    float GetLobbyTime = 0;
 
     
 
@@ -262,7 +262,7 @@ public class lobbyManager : MonoBehaviour
        return currJoinedLobby.Players.Count;
     }
 
-    private async void UpdateJoinedLobby()
+    public async void UpdateJoinedLobby()
     {
         try
         {

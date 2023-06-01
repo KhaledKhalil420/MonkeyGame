@@ -4,18 +4,17 @@ using System.Collections;
 
 public class PlayerVine : MonoBehaviour
 {
-    private DistanceJoint2D Joint;
-    private SpriteShapeController SpriteShape;
-    private bool CanEditVinePos, CanUseVine = true;
     private Rigidbody2D Rb;
+    private DistanceJoint2D Joint;
     private PlayerMovement Movement;
+    private bool CanEditVinePos, CanUseVine = true;
     
 
     public static bool IsUsingVine;
 
     [SerializeField] private Vector3 offset;
     [SerializeField] private float JumpVel, JumpTime;
-    [HideInInspector] public bool IsAddingForce = false ;
+    [HideInInspector] public bool IsAddingForce = false;
 
     public bool addingfor;
 
@@ -30,20 +29,17 @@ public class PlayerVine : MonoBehaviour
     {
         if(other.CompareTag("Vine") & CanUseVine)
         {
-            if(SpriteShape == null)
-            SpriteShape = other.GetComponent<SpriteShapeController>();
-            IsUsingVine = true;
-
-            CanUseVine = false;
-            Invoke(nameof(CanUseVineReset), 0.3f);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.CompareTag("Vine") & CanUseVine)
-        {
-            SpriteShape = null;
+            if(Input.GetKeyDown(KeyCode.E))
+            {
+                if(IsUsingVine)
+                {
+                    IsUsingVine = true;
+                }
+                else
+                {
+                    IsUsingVine = false;
+                }
+            }
         }
     }
 
@@ -66,9 +62,6 @@ public class PlayerVine : MonoBehaviour
 
         if(IsUsingVine & CanEditVinePos)
         {
-            Joint.enabled = true;
-
-            Joint.connectedAnchor = SpriteShape.spline.GetPosition(1) + offset;
             Rb.gravityScale =  Rb.gravityScale * 20;
             CanEditVinePos = false;
         }

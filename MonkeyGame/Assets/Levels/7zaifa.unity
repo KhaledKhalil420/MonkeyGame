@@ -1019,7 +1019,7 @@ MonoBehaviour:
   gameStatsText: {fileID: 1549435539}
   timerText: {fileID: 1239626628}
   maxStartTime: 5
-  minPlayersCount: 1
+  minPlayersCount: 2
 --- !u!1 &942375019
 GameObject:
   m_ObjectHideFlags: 0
