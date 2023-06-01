@@ -131,7 +131,7 @@ public class lobbyManager : MonoBehaviour
 
             NetworkManager.Singleton.StartHost();
             Debug.Log("Creadet lobby " + lobby.Name + RelayCode);
-            NetworkManager.Singleton.SceneManager.LoadScene("trainArea", LoadSceneMode.Single);
+            //NetworkManager.Singleton.SceneManager.LoadScene("trainArea", LoadSceneMode.Single);
             
         }
         catch

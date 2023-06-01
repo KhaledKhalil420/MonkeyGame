@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Levels/Khaled.unity
     guid: 04f1d5e479b0430419a42ee10750a4b6
+  - enabled: 1
+    path: Assets/Levels/7zaifa.unity
+    guid: 3903138e070dbbb45ada2e7273548bd3
   m_configObjects: {}
