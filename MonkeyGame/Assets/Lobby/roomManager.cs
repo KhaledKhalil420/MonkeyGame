@@ -54,7 +54,7 @@ public class roomManager : MonoBehaviour
     void startGame()
     {
         lobbyManager.Instance.UpdateJoinedLobby();
-        NetworkManager.Singleton.SceneManager.LoadScene("Khaled", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("gameTest", LoadSceneMode.Single);
     }
 
 }
