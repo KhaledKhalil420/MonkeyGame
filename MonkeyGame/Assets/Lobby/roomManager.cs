@@ -34,7 +34,7 @@ public class roomManager : MonoBehaviour
         gameStatsText.gameObject.SetActive(true);
 
         if(!NetworkManager.Singleton.IsHost) return;
-        
+
         if(NetworkManager.Singleton.ConnectedClients.Count < minPlayersCount)
         {
             gameStatsText.text = "players : " + NetworkManager.Singleton.ConnectedClients.Count + " / 2";
@@ -54,7 +54,7 @@ public class roomManager : MonoBehaviour
     void startGame()
     {
         lobbyManager.Instance.UpdateJoinedLobby();
-        NetworkManager.Singleton.SceneManager.LoadScene("Khaled", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("gameTest", LoadSceneMode.Single);
     }
 
 }
