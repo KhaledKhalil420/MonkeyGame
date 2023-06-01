@@ -13,6 +13,7 @@ using Unity.Netcode.Transports.UTP;
 using TMPro;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
+using System;
 
 public class lobbyManager : MonoBehaviour
 {
@@ -216,9 +217,9 @@ public class lobbyManager : MonoBehaviour
             playerOptions.Data["playerId"].Value = NetworkManager.Singleton.LocalClientId.ToString();
 
         }
-        catch
+        catch (Exception e) 
         {
-
+            Debug.Log(e);
         }
     }
 
