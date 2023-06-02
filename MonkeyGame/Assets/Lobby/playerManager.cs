@@ -14,6 +14,10 @@ public class playerManager : NetworkBehaviour
 
     bool spawnedPlayers = false;
 
+    List<GameObject> blueTeam = new List<GameObject>();
+    List<GameObject> redTeam = new List<GameObject>();
+
+
     void Start()
     {
         spawnPlayerServerRpc(NetworkManager.LocalClientId);
