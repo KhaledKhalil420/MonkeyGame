@@ -2,7 +2,7 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Collections;
 
-public class CameraFollow : NetworkBehaviour
+public class CameraFollow : MonoBehaviour
 {
     public static CameraFollow Instance;
 
@@ -17,18 +17,6 @@ public class CameraFollow : NetworkBehaviour
     public float ShakeStrength;
     public float ShakeTime;
     private Transform Cam;
-
-    private  void Start()
-    {
-        if(transform.parent.GetComponent<PlayerMovement>().IsOwner)
-        {
-            gameObject.SetActive(true);
-        }
-        else 
-        {
-            gameObject.SetActive(false);
-        }
-    }   
 
     private void Update()
     {
