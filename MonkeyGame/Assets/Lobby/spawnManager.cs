@@ -5,7 +5,7 @@ using Unity.Netcode;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 
-public class playerManager : NetworkBehaviour
+public class spawnManager : NetworkBehaviour
 {
     public NetworkObject playerPrefab;
     public Transform[] spawnPoint;
@@ -14,12 +14,13 @@ public class playerManager : NetworkBehaviour
 
     bool spawnedPlayers = false;
 
-    List<GameObject> blueTeam = new List<GameObject>();
-    List<GameObject> redTeam = new List<GameObject>();
+    public List<Teams> teams = new List<Teams>();
 
+    public static spawnManager instance;
 
     void Start()
     {
+        if(instance == null) instance = this;
         spawnPlayerServerRpc(NetworkManager.LocalClientId);
     }
 
@@ -39,10 +40,34 @@ public class playerManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     void spawnPlayerServerRpc(ulong id)
     {
+        //spawn the player
         int randomSpawnPoint = Random.Range(0, spawnPoint.Length);
         NetworkObject p = NetworkManager.Instantiate(playerPrefab, spawnPoint[randomSpawnPoint].position, Quaternion.identity);
-        //int playerId;
-        //int.TryParse(lobbyManager.Instance.currentLobby.Players[(int)NetworkManager.LocalClientId].Data["playerId"].Value, out playerId);
         p.SpawnAsPlayerObject((ulong)id);
+
+        //add the player to a random team
+        int randomTeam = Random.Range(0, teams.Count);
+        if(teams[randomTeam].playersInTeam.Count < teams[randomTeam].maxPlayersInTeam)
+        {
+            teams[randomTeam].playersInTeam.Add(p.gameObject);
+            p.GetComponent<playerStats>().teamId.Value = randomTeam; 
+        }
+        else
+        {
+            for (int i = 0; i < teams.Count; i++)
+            {
+                if(teams[i].playersInTeam.Count < teams[i].maxPlayersInTeam)
+                teams[i].playersInTeam.Add(p.gameObject);
+                p.GetComponent<playerStats>().teamId.Value = i; 
+            }
+        }
     }
+}
+
+[System.Serializable]
+public class Teams
+{
+    public Color teamColor;
+    public int maxPlayersInTeam;
+    [HideInInspector] public List<GameObject> playersInTeam = new List<GameObject>();
 }
