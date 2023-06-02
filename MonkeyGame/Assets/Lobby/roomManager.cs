@@ -15,6 +15,8 @@ public class roomManager : MonoBehaviour
     [SerializeField] float minPlayersCount = 2;
     float StartTime;
 
+    public string gameScene;
+
 
     // Update is called once per frame
     void Update()
@@ -54,7 +56,7 @@ public class roomManager : MonoBehaviour
     void startGame()
     {
         lobbyManager.Instance.UpdateJoinedLobby();
-        NetworkManager.Singleton.SceneManager.LoadScene("Khaled", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(gameScene, LoadSceneMode.Single);
     }
 
 }

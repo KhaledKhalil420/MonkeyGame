@@ -1243,7 +1243,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1034080803
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &609101124
@@ -1584,7 +1584,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1034080803
   m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &914615740
@@ -1624,6 +1624,7 @@ MonoBehaviour:
   timerText: {fileID: 1239626628}
   maxStartTime: 5
   minPlayersCount: 2
+  gameScene: Khaled
 --- !u!1 &942375019
 GameObject:
   m_ObjectHideFlags: 0
@@ -3342,7 +3343,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1871086225
 RectTransform:
   m_ObjectHideFlags: 0

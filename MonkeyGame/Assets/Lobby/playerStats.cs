@@ -12,6 +12,8 @@ public class playerStats : NetworkBehaviour
     NetworkVariableWritePermission.Server
     );
 
+    public GameObject winScreen;
+    public GameObject loseScreen;
     
 
     public void Update()
@@ -30,20 +32,27 @@ public class playerStats : NetworkBehaviour
 
         if(other.CompareTag("winBanana"))
         {
-            winServerRpc();
+            winServerRpc(teamId.Value);
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    void winServerRpc()
+    public override void OnNetworkSpawn()
     {
-        winClientRpc();
+        if(IsLocalPlayer) winScreen.transform.parent.GetComponent<Canvas>().worldCamera = Camera.main;
+        else Destroy(winScreen.transform.parent);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void winServerRpc(int winnerTeamId)
+    {
+        winClientRpc(winnerTeamId);
     }
 
     [ClientRpc]
-    void winClientRpc()
+    void winClientRpc(int winnerTeamId)
     {
-
+        if(teamId.Value == winnerTeamId) winScreen.SetActive(true);
+        else loseScreen.SetActive(true);
     }
 
 }
