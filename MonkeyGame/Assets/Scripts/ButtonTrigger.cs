@@ -16,7 +16,7 @@ public class ButtonTrigger : NetworkBehaviour
     {
         if(other.collider.CompareTag("Player"))
         {
-            TriggerLikedObj_ClientRpc();
+            TriggerLikedObj_ServerRpc();
         }
     }
 
@@ -24,15 +24,20 @@ public class ButtonTrigger : NetworkBehaviour
     {
         if(other.collider.CompareTag("Player"))
         {
-            TriggerLikedObj_ClientRpc();
+            TriggerLikedObj_ServerRpc();
         }
     }
 
 
-    [ClientRpc]
-    void TriggerLikedObj_ClientRpc()
+    [ServerRpc(RequireOwnership = false)]
+    void TriggerLikedObj_ServerRpc()
     {
-        Debug.Log("w");
+        TriggerForClients_ClientRpc();
+    }
+    
+    [ClientRpc]
+    void TriggerForClients_ClientRpc()
+    {
         if(LinkedObjectITriggerable != null)
         LinkedObjectITriggerable.Trigger();
     }
