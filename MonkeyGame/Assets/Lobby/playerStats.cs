@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class playerStats : MonoBehaviour
+public class playerStats : NetworkBehaviour
 {
     public NetworkVariable<int> teamId = new NetworkVariable<int>(
     0,    
