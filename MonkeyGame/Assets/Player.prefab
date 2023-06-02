@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: 8256972541847083443}
   - component: {fileID: 4897495009987259229}
   - component: {fileID: 2911093480128628603}
+  - component: {fileID: 1113335570807845091}
+  - component: {fileID: 8394649992772737431}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -269,8 +271,8 @@ MonoBehaviour:
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
   InLocalSpace: 0
-  Interpolate: 1
-  SlerpPosition: 1
+  Interpolate: 0
+  SlerpPosition: 0
 --- !u!114 &3300696712308363132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,6 +332,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamId:
     m_InternalValue: 0
+--- !u!95 &1113335570807845091
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071529819200259221}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8394649992772737431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071529819200259221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8deae8091111f4eb30a56c1f4e0d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 6275563001920414793}
 --- !u!1 &2459317466458901208
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,7 +440,6 @@ GameObject:
   - component: {fileID: 7518787542004668148}
   - component: {fileID: 5933278811085933254}
   - component: {fileID: 6275563001920414793}
-  - component: {fileID: 5969661306871783103}
   m_Layer: 0
   m_Name: Sprites
   m_TagString: Untagged
@@ -499,17 +535,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5969661306871783103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6596930369008737972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 6275563001920414793}
