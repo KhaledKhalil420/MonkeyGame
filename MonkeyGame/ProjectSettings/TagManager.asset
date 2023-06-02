@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Vine
   - Damage
+  - winBanana
   layers:
   - Default
   - TransparentFX

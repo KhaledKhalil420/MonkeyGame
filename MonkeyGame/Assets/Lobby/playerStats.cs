@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.Networking;
 
 public class playerStats : NetworkBehaviour
 {
@@ -11,12 +12,38 @@ public class playerStats : NetworkBehaviour
     NetworkVariableWritePermission.Server
     );
 
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
-    void Start()
+    
+
+    public void Update()
     {
         GetComponent<SpriteRenderer>().color = spawnManager.instance.teams[teamId.Value].teamColor;
     }
+
+    /// <summary>
+    /// Sent when another object enters a trigger collider attached to this
+    /// object (2D physics only).
+    /// </summary>
+    /// <param name="other">The other Collider2D involved in this collision.</param>
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(!IsLocalPlayer) return;
+
+        if(other.CompareTag("winBanana"))
+        {
+            winServerRpc();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void winServerRpc()
+    {
+        winClientRpc();
+    }
+
+    [ClientRpc]
+    void winClientRpc()
+    {
+
+    }
+
 }
