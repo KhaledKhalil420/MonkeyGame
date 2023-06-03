@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: outLine
+  m_Name: firstTeamMat
   m_Shader: {fileID: -6465566751694194690, guid: 64c81940c17de8a42ba9a1c0182119c3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -45,7 +45,7 @@ Material:
     - _QueueOffset: 0
     - _outLineThicknith: 5
     m_Colors:
-    - _OutLineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutLineColor: {r: 0, g: 0.6362667, b: 1, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &6784254287004277677
 MonoBehaviour:

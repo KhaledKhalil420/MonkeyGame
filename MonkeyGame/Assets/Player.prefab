@@ -357,7 +357,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2072542612962595827}
   - component: {fileID: 6167263998779739672}
-  - component: {fileID: 7971550432178996622}
   m_Layer: 0
   m_Name: outLine
   m_TagString: Untagged
@@ -373,11 +372,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3710590163875906431}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.026, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3494218921328229855}
+  m_Father: {fileID: 25472901190375464}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6167263998779739672
@@ -421,7 +420,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9e64be45d2d946647a820f40265ee3c1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 85918d7226112924a9be8b461c371540, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -432,27 +431,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &7971550432178996622
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3710590163875906431}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a244c7cecf4351e4997067888e98e294, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5364711257044258503
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +471,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 25472901190375464}
-  - {fileID: 2072542612962595827}
   - {fileID: 6665299240255902559}
   - {fileID: 5952387116073048772}
   - {fileID: 1558747822061471344}
@@ -752,6 +729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3288f43c1aedc464b9179abe201f98f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outLine: {fileID: 6167263998779739672}
   teamId:
     m_InternalValue: 0
   winScreen: {fileID: 7090079076275917038}
@@ -954,7 +932,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.026, z: 0}
   m_LocalScale: {x: 2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2072542612962595827}
   m_Father: {fileID: 3494218921328229855}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

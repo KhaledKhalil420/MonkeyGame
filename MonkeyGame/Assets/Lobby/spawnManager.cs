@@ -79,7 +79,7 @@ public class spawnManager : NetworkBehaviour
 [System.Serializable]
 public class Teams
 {
-    public Color teamColor;
+    public Material teamColor;
     public int maxPlayersInTeam;
     [HideInInspector] public List<GameObject> playersInTeam = new List<GameObject>();
 }
