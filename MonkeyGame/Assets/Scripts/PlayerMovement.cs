@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    [SerializeField] private GameObject CameraObject;
     public static PlayerMovement Instance;
 
     [Header("Physics, Jump"), Space(3)]                               
@@ -51,7 +50,6 @@ public class PlayerMovement : NetworkBehaviour
     {
         Anim = GetComponentInChildren<Animator>();
         Rb = GetComponent<Rigidbody2D>();
-        Instantiate(CameraObject, transform.position, Quaternion.identity);
     }
 
     void Update()
