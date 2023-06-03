@@ -14,7 +14,6 @@ public class playerStats : NetworkBehaviour
 
     public GameObject winScreen;
     public GameObject loseScreen;
-    
 
     public void Update()
     {
@@ -28,22 +27,22 @@ public class playerStats : NetworkBehaviour
     /// <param name="other">The other Collider2D involved in this collision.</param>
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(!IsLocalPlayer) return;
+        if(!IsOwner) return;
 
         if(other.CompareTag("winBanana"))
         {
-            winServerRpc(teamId.Value);
+            spawnManager.instance.winManagerServerRpc(teamId.Value);
         }
     }
 
     public override void OnNetworkSpawn()
     {
-        if(IsLocalPlayer) winScreen.transform.parent.GetComponent<Canvas>().worldCamera = Camera.main;
-        else Destroy(winScreen.transform.parent);
+        if(IsOwner) winScreen.transform.parent.GetComponent<Canvas>().worldCamera = Camera.main;
+        else Destroy(winScreen.transform.parent.gameObject);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void winServerRpc(int winnerTeamId)
+    public void winServerRpc(int winnerTeamId)
     {
         winClientRpc(winnerTeamId);
     }
@@ -51,8 +50,13 @@ public class playerStats : NetworkBehaviour
     [ClientRpc]
     void winClientRpc(int winnerTeamId)
     {
-        if(teamId.Value == winnerTeamId) winScreen.SetActive(true);
-        else loseScreen.SetActive(true);
+        handleWin(winnerTeamId);
     }
 
+
+    void handleWin(int winnerTeamId)
+    {
+        if(teamId.Value == winnerTeamId) winScreen.SetActive(true);
+        if(teamId.Value != winnerTeamId) loseScreen.SetActive(true);
+    }
 }
