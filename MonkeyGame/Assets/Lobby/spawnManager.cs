@@ -62,6 +62,18 @@ public class spawnManager : NetworkBehaviour
             }
         }
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void winManagerServerRpc(int win)
+    {
+        foreach (Teams team in teams)
+        {
+            foreach (GameObject player in team.playersInTeam)
+            {
+                player.GetComponent<playerStats>().winServerRpc(win);
+            }
+        }
+    }
 }
 
 [System.Serializable]
