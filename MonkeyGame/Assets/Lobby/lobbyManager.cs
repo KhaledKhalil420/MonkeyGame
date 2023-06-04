@@ -280,6 +280,12 @@ public class lobbyManager : MonoBehaviour
         }
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void spawnNetWorkObject(NetworkObject objectToSpawm)
+    {
+        objectToSpawm.Spawn();
+    }
+
     public async void Authenticate()
     {
         if(nameFieald.text != null)
