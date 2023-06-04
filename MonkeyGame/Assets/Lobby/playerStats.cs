@@ -6,6 +6,8 @@ using UnityEngine.Networking;
 
 public class playerStats : NetworkBehaviour
 {
+    public SpriteRenderer outLine;
+
     public NetworkVariable<int> teamId = new NetworkVariable<int>(
     0,    
     NetworkVariableReadPermission.Everyone, 
@@ -17,7 +19,7 @@ public class playerStats : NetworkBehaviour
 
     public void Update()
     {
-        GetComponent<SpriteRenderer>().color = spawnManager.instance.teams[teamId.Value].teamColor;
+        outLine.material = spawnManager.instance.teams[teamId.Value].teamColor;
     }
 
     /// <summary>

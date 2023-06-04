@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: unlitOutLine
-  m_Shader: {fileID: -6465566751694194690, guid: c197e22d5d46ef048999e3de6cdad5dc, type: 3}
+  m_Name: firstTeamMat
+  m_Shader: {fileID: -6465566751694194690, guid: 64c81940c17de8a42ba9a1c0182119c3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -16,7 +16,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -24,10 +24,6 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 47fb9f6b75f480b4eb43e08cef6a9cba, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Texture2DAsset_464f6dfe79444af8b64ce682d7571c36_Out_0_Texture2D:
         m_Texture: {fileID: 2800000, guid: 9e64be45d2d946647a820f40265ee3c1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -47,9 +43,11 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    - _outLineThicknith: 5
+    m_Colors:
+    - _OutLineColor: {r: 0, g: 0.6362667, b: 1, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &3959244210911282786
+--- !u!114 &6784254287004277677
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
