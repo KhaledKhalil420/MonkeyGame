@@ -12,8 +12,6 @@ public class AudioManager : MonoBehaviour
     public AudioMixer DefaultAudioMixer;
 
     private bool IsFading, CanFade;
-    public float FadingSpeed;
-    float CurrnetMusicVolume = 1;
 
     private void Awake()
     {
@@ -33,10 +31,6 @@ public class AudioManager : MonoBehaviour
         if(Instance == null) Instance = this;   
     }
 
-    private void FixedUpdate()
-    {
-        FadeMusic();
-    }
 
     void SetupAudioManager()
     {
@@ -102,59 +96,5 @@ public class AudioManager : MonoBehaviour
         }
     }
     
-    #endregion
-    
-    #region DyanmicMusic
-
-    public IEnumerator FadeMusicIn(float FadingTime, AudioClip clip)
-    {
-        CanFade = true;
-        IsFading = true;
-
-        yield return new WaitForSeconds(FadingTime);
-
-        ReplaceSoundClip("Music", clip);
-        IsFading = false;
-    }
-
-
-    void FadeMusic()
-    {
-        Sound Music = new Sound();
-        bool FoundSound = new bool();
-
-        if(!FoundSound)
-        {
-            foreach(Sound SoundToFind in Sounds)
-            {
-                if(SoundToFind.SoundName == "Music") Music = SoundToFind;
-                FoundSound = true;
-            }
-        }
-
-        if(CanFade)
-        {
-            Music.Volume = Mathf.Clamp(CurrnetMusicVolume, 0, 1);
-            if(IsFading)
-            {
-                if(Music.Volume > 0)
-                {
-                    CurrnetMusicVolume -= Time.fixedDeltaTime * FadingSpeed;
-                }
-            }    
-
-            if(!IsFading & CanFade)
-            {
-                CurrnetMusicVolume += Time.fixedDeltaTime  * FadingSpeed;
-
-                if(Music.Volume >= 0.99f)
-                {
-                    CanFade = false;
-                }
-            }
-            ChangeVolume("Music", CurrnetMusicVolume);
-        }
-    }
-
     #endregion
 }
