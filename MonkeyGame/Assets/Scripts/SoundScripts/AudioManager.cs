@@ -41,7 +41,7 @@ public class AudioManager : MonoBehaviour
 
             //Setup AudioSource Data
             SoundToPlay.Source.volume = SoundToPlay.Volume;
-            SoundToPlay.Source.pitch = SoundToPlay.Pitch;
+            SoundToPlay.Source.pitch = 1;
 
             SoundToPlay.Source.loop = SoundToPlay.Loop;
             SoundToPlay.Source.clip = SoundToPlay.Clip;
@@ -76,7 +76,7 @@ public class AudioManager : MonoBehaviour
             PlaySound(SoundName);
     }
 
-    public void PlaySoundWithRandomPitch(string SoundName, float Min, float Max)
+    public void PlaySoundRandomPitch(string SoundName, float Min, float Max)
     {
         foreach(Sound SoundToPlay in Sounds)
             if(SoundToPlay.SoundName == SoundName) 
