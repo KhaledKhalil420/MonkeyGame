@@ -4,9 +4,11 @@ using UnityEngine;
 using Unity.Netcode;
 
 
-public class weapon : MonoBehaviour
+public class weapon : NetworkBehaviour
 {
     public weaponInfo info;
+
+    public Sprite GFX;
 
     public Transform shotPoint;
 
@@ -26,6 +28,8 @@ public class weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!IsClient) return;
+
         faceMouse();
 
         shoot();
