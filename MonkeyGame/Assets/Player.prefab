@@ -527,7 +527,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2072542612962595827
 Transform:
   m_ObjectHideFlags: 0
@@ -737,7 +737,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.9812484}
+  m_Size: {x: 0.67553324, y: 0.9812484}
   m_EdgeRadius: 0
 --- !u!50 &3795075082311532548
 Rigidbody2D:
@@ -788,13 +788,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   MovementX: 0
-  LastDirection: -1
+  LastDirection: 1
   Speed: 350
   JumpForce: 500
   JumpCoolDown: 0.25
-  WallJumpXForce: 400
+  WallJumpXForce: 300
   WallJumpYForce: 600
-  WallJumpTime: 0.1
+  WallJumpTime: 0.15
   GravityOnGround: 3
   GravityLowJump: 3
   GravityOnWall: 3

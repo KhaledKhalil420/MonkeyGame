@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Abilites : EasyNetworkBehaviour
 {
-    public enum PlayerUpgrade {SpeedBoost, DoubleJump, Slowness, CameraFlip, RandomUpgrade}
+    public enum PlayerUpgrade {SpeedBoost, DoubleJump, Slowness, CameraFlip}
 
     [SerializeField] private PlayerUpgrade PowerUp;
     private GameObject Player;
@@ -30,20 +30,17 @@ public class Abilites : EasyNetworkBehaviour
                 StartCoroutine(SpeedBoost());
                 break;
 
-                case PlayerUpgrade.DoubleJump:
-                
-                break;
 
                 case PlayerUpgrade.Slowness:
                 StartCoroutine(Slowness());
                 break;
 
-                case PlayerUpgrade.CameraFlip:
-                StartCoroutine(CameraFlip());
+                case PlayerUpgrade.DoubleJump:
+                Jump();
                 break;
 
-                case PlayerUpgrade.RandomUpgrade:
-                
+                case PlayerUpgrade.CameraFlip:
+                StartCoroutine(CameraFlip());
                 break;
             }
         }
@@ -73,6 +70,11 @@ public class Abilites : EasyNetworkBehaviour
         yield return new WaitForSeconds(5);
 
         Player.GetComponent<PlayerMovement>().Speed = OldPlayerSpeed;
+    }
+
+    public void Jump()
+    {
+        Player.GetComponent<PlayerMovement>().Jump(600);
     }
 
     IEnumerator CameraFlip()

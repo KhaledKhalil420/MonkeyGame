@@ -30,6 +30,7 @@ public class PlayerMovement : NetworkBehaviour
     public float JumpCoolDown;
     public float WallJumpXForce, WallJumpYForce;
     public float WallJumpTime;
+    private bool CanChangeWallJumpGravity;
 
     [Header("GameFeel, Gravity")]
     public float GravityOnGround, GravityLowJump, GravityOnWall;
@@ -79,8 +80,14 @@ public class PlayerMovement : NetworkBehaviour
         MovementX = Input.GetAxisRaw("Horizontal");
         
         //Get LastMovment Direction
-        if(MovementX == 1 & !DoingWallForce) LastDirection = 1;
-        if(MovementX == -1 & !DoingWallForce) LastDirection = -1; 
+        if(MovementX == 1 & !DoingWallForce) 
+        {
+            LastDirection = 1;
+        }
+        if(MovementX == -1 & !DoingWallForce)
+        {
+            LastDirection = -1;
+        } 
         
         //Jumping When IsGrounded or can cayoteJump
         if(Input.GetButtonDown("Jump") & IsGrounded & CanJump & !IsWalled | Input.GetButtonDown("Jump") & CanJump & CanCayoteJump  & !IsWalled )
@@ -134,32 +141,22 @@ public class PlayerMovement : NetworkBehaviour
     public void WallJump()
     {
         //If Is not walled change gravity do Normal gravity
-        bool CanChangeGravity = new();
         if(IsWalled & !IsGrounded & MovementX != 0 )
         {
             Rb.gravityScale = GravityOnWall;
-            CanChangeGravity = true;
+            CanChangeWallJumpGravity = true;
         }
-        else if(!IsWalled & CanChangeGravity)
+        else if(!IsWalled & CanChangeWallJumpGravity)
         {
             Rb.gravityScale = GravityOnGround;
-            CanChangeGravity = false;
+            CanChangeWallJumpGravity = false;
         }
+
         
         //Adds WallJumpForce
         if(DoingWallForce & IsWalled)
         {
             Rb.velocity = new Vector2(-LastDirection * WallJumpXForce * Time.fixedDeltaTime, WallJumpYForce * Time.fixedDeltaTime);
-        }
-        
-        //If It was still adding WallForce but Its not walled, flip the player
-        else if(DoingWallForce & !IsWalled)
-        {
-            bool FlipS = (LastDirection == 1 ? true : false);
-            float Angle = (FlipS ? 180 : 0);
-            LastDirection = (FlipS ? -1 : 1);
-
-            transform.eulerAngles = new Vector3(0, Angle, 0);
         }
     }
 
@@ -212,7 +209,7 @@ public class PlayerMovement : NetworkBehaviour
         //Get boxColllider
         BoxCollider2D Bc = GetComponent<BoxCollider2D>();
 
-        Gizmos.DrawWireCube(Feet.position, new Vector2(Bc.size.x / 2 - 0.05f, 0.2f));
+        Gizmos.DrawWireCube(Feet.position, new Vector2(Bc.size.x - 0.05f, 0.2f));
         Gizmos.DrawWireCube(WallPoint.position, WallJumpDetection);
     }
     
@@ -223,7 +220,7 @@ public class PlayerMovement : NetworkBehaviour
         BoxCollider2D Bc = GetComponent<BoxCollider2D>();
 
         ///Make GroundCheck
-        Vector2 GroundCheckSize = new Vector2(Bc.size.x / 2 - 0.05f, 0.2f);
+        Vector2 GroundCheckSize = new Vector2(Bc.size.x - 0.05f, 0.2f);
         IsGrounded = Physics2D.OverlapBox(Feet.position, GroundCheckSize, 0, GroundLayer);
 
         //When Wall detection
