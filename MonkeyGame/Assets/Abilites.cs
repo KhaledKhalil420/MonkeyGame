@@ -44,8 +44,6 @@ public class Abilites : EasyNetworkBehaviour
                 
                 break;
             }
-
-            DestroyNObject(gameObject);
         }
     }
 
