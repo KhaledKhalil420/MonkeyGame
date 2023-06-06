@@ -69,12 +69,11 @@ public class roomManager : MonoBehaviour
         if(loadedLevels) return;
 
         buttonsHolder.gameObject.SetActive(true);
-        //get levels folder path
+
         DirectoryInfo dir = new DirectoryInfo("Assets/Levels");
-        //choose only scene files
         FileInfo[] info = dir.GetFiles("*.unity");
         
-        //spawn a butten foreach level
+
         foreach(FileInfo scene in info)
         {
             levelButton button = Instantiate(levelButton, buttonsHolder);

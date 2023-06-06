@@ -35,7 +35,7 @@ namespace UnityToolbarExtender.Examples
 
 			if(GUILayout.Button(new GUIContent("L", "Start lobby Scene"), ToolbarStyles.commandButtonStyle))
 			{
-				SceneHelper.StartScene("7zaifa");
+				SceneHelper.StartScene("lobby");
 			}
 		}
 	}

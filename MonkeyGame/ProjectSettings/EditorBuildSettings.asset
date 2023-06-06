@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Lobby/7zaifa.unity
+    path: Assets/Lobby/lobby.unity
     guid: 3903138e070dbbb45ada2e7273548bd3
   - enabled: 1
     path: Assets/Levels/Khaled.unity
@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Levels/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Levels/gameTest.unity
+    path: Assets/Levels/weapons.unity
     guid: c88e73e5a1b03684a9a3421158d0f04a
   m_configObjects: {}

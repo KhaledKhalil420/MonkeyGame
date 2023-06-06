@@ -8,7 +8,7 @@ public class weapon : NetworkBehaviour
 {
     public weaponInfo info;
 
-    public Sprite GFX;
+    public SpriteRenderer GFX;
 
     public Transform shotPoint;
 
@@ -23,6 +23,7 @@ public class weapon : NetworkBehaviour
     void Start()
     {
         defaultScale = transform.localScale;
+        GFX.sprite = info.weaponSprite;
     }
 
     // Update is called once per frame
