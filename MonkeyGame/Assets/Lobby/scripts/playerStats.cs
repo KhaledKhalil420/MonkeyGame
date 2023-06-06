@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.Networking;
+using TMPro;
 
 public class playerStats : NetworkBehaviour
 {
@@ -13,6 +14,8 @@ public class playerStats : NetworkBehaviour
     NetworkVariableReadPermission.Everyone, 
     NetworkVariableWritePermission.Server
     );
+
+    public TMP_Text nameText;
 
     public GameObject winScreen;
     public GameObject loseScreen;
@@ -41,6 +44,8 @@ public class playerStats : NetworkBehaviour
     {
         if(IsOwner) winScreen.transform.parent.GetComponent<Canvas>().worldCamera = Camera.main;
         else Destroy(winScreen.transform.parent.gameObject);
+
+        nameText.text = lobbyManager.Instance.currentLobby.Players[(int)NetworkManager.LocalClientId].Data["playerName"].Value;
     }
 
     [ServerRpc(RequireOwnership = false)]
