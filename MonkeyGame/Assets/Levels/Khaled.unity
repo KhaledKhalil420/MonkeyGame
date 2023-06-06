@@ -5883,7 +5883,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -28
   m_Sprite: {fileID: 21300000, guid: a155b7ef128abfd44988d4e68d11f371, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
@@ -8419,7 +8419,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -28
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: a155b7ef128abfd44988d4e68d11f371, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -10450,11 +10450,11 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -45
   m_Sprite: {fileID: 21300000, guid: a155b7ef128abfd44988d4e68d11f371, type: 3}
-  m_Color: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+  m_Color: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 18.315723, y: 6.675933}
+  m_Size: {x: 23.18898, y: 6.675933}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -10468,7 +10468,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2080454716}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3, y: 0.3355, z: 0}
+  m_LocalPosition: {x: 2.1366, y: 0.3355, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
