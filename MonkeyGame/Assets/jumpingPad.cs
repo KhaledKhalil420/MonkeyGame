@@ -7,7 +7,7 @@ public class jumpingPad : MonoBehaviour
 
     private void Start()
     {
-        Anim = GetComponent<Animator>();
+        Anim = GetComponentInChildren<Animator>();
     }
 
 
