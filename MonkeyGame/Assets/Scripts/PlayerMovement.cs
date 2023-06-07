@@ -5,44 +5,45 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour
 {
     public static PlayerMovement Instance;
+    
+    //RAYCASTS
+    private bool CanJump = true; 
+    public bool IsGrounded;
+    private bool IsWalled, IsReadyToJump; 
 
-    [Header("Physics, Jump"), Space(3)]                               
-    bool CanJump = true; 
-    public bool IsGrounded, IsWalled, IsReadyToJump;
-    private bool DoingWallForce;
+    [SerializeField] private Transform Feet;
+    [SerializeField] private Transform WallPoint;
+    [SerializeField] private Vector2 WallJumpDetection;
 
-
-    [Header("RayCast, Points"), Space(3)]
-    public Transform Feet;
-    public Transform WallPoint;
-    public Vector2 WallJumpDetection;
-
-    [Header("RayCast, Layers"), Space(3)]
-    public LayerMask GroundLayer;
+    [SerializeField] private LayerMask GroundLayer;
     public float MovementX, LastDirection;
 
-    [Header("Physics, Forces"), Space(3)]
     //Speed
     public float Speed;
 
     //Jump
-    public float JumpForce;
-    public float JumpCoolDown;
-    public float WallJumpXForce, WallJumpYForce;
-    public float WallJumpTime;
-    private bool CanChangeWallJumpGravity;
+    public float JumpForce, JumpCoolDown;
 
-    [Header("GameFeel, Gravity")]
-    public float GravityOnGround, GravityLowJump, GravityOnWall;
+    //Wall Jumping
+    [SerializeField] private float WallJumpingTime;
+    [SerializeField] private float WallJumpingForceTime;
+    [SerializeField] private Vector2 WallJumpingForce;
+    private float WallJumpingTimer;
+    private bool IsWallJumping;
+    
+    //Wall Sliding
+    [SerializeField] private float WallSidingSpeed;
+    private bool IsSliding; 
+    private bool CanSlide = true;
 
-    [Header("Gamefeel, CayoteJump"), Space(3)]
-    public float CayoteJumpCoolDown;
-    float CayoteTimer;
-    bool CanCayoteJump;
+    //Cayote Jump and Gravity
+    [SerializeField] private float GravityOnGround, GravityLowJump;
+    [SerializeField] private float CayoteJumpCoolDown;
+    private float CayoteTimer;
+    private bool CanCayoteJump;
 
-    [Header("Refrences"), Space(3)]
-    Animator Anim;
-    Rigidbody2D Rb;       
+    private Animator Anim;
+    private Rigidbody2D Rb;       
 
     [SerializeField] private bool IsOffline;
 
@@ -69,8 +70,9 @@ public class PlayerMovement : NetworkBehaviour
 
     void FixedUpdate()
     {
-        ApplyMovement();   
+        WallSlide();
         WallJump();
+        ApplyMovement();   
     }
     
 
@@ -80,30 +82,31 @@ public class PlayerMovement : NetworkBehaviour
         MovementX = Input.GetAxisRaw("Horizontal");
         
         //Get LastMovment Direction
-        if(MovementX == 1 & !DoingWallForce) 
+        if(MovementX == 1 ) 
         {
             LastDirection = 1;
+            Invoke(nameof(StopWallJump), WallJumpingForceTime);
         }
-        if(MovementX == -1 & !DoingWallForce)
+
+        if(MovementX == -1) 
         {
             LastDirection = -1;
-        } 
+            Invoke(nameof(StopWallJump), WallJumpingForceTime);
+        }
         
         //Jumping When IsGrounded or can cayoteJump
-        if(Input.GetButtonDown("Jump") & IsGrounded & CanJump & !IsWalled | Input.GetButtonDown("Jump") & CanJump & CanCayoteJump  & !IsWalled )
+        if(Input.GetButtonDown("Jump") & IsGrounded & CanJump | Input.GetButtonDown("Jump") & CanJump & CanCayoteJump)
         {
+            //Jump
             Jump(JumpForce);
+
+            //Reset Jump
             CanJump = false;
             Invoke(nameof(GetReadyToJump), JumpCoolDown);
         }
+    
         
-        //WallJump
-        if(Input.GetButtonDown("Jump") & IsWalled & MovementX != 0 & !DoingWallForce)
-        {
-            StartCoroutine(WallForce());
-        }
-        
-        //When releases space adds force downards
+        //When releases space adds force DownWards
         if(Input.GetButtonUp("Jump") & !IsWalled)
         {
             if(Rb.velocity.y > 0)
@@ -114,6 +117,11 @@ public class PlayerMovement : NetworkBehaviour
             {
                 Rb.gravityScale = GravityLowJump;
             }
+        }
+
+        if(Input.GetButtonDown("Jump") & IsWalled)
+        {
+            
         }
     }
         
@@ -132,42 +140,82 @@ public class PlayerMovement : NetworkBehaviour
 
     void ApplyMovement()
     {
-        if(!DoingWallForce)
+        if(!IsWallJumping)
         Rb.velocity = new Vector2(MovementX * Speed * Time.fixedDeltaTime, Rb.velocity.y);
     }
     
     #region  WallJump
 
-    public void WallJump()
+    void WallSlide()
     {
-        //If Is not walled change gravity do Normal gravity
-        if(IsWalled & !IsGrounded & MovementX != 0 )
+        if(IsWalled & !IsGrounded && MovementX != 0 & CanSlide)
         {
-            Rb.gravityScale = GravityOnWall;
-            CanChangeWallJumpGravity = true;
+            IsSliding = true;
+            Rb.velocity = new Vector2(Rb.velocity.x, Mathf.Clamp(Rb.velocity.y, -WallSidingSpeed, float.MaxValue) * Time.fixedDeltaTime);
         }
-        else if(!IsWalled & CanChangeWallJumpGravity)
+        else
         {
-            Rb.gravityScale = GravityOnGround;
-            CanChangeWallJumpGravity = false;
-        }
-
-        
-        //Adds WallJumpForce
-        if(DoingWallForce & IsWalled)
-        {
-            Rb.velocity = new Vector2(-LastDirection * WallJumpXForce * Time.fixedDeltaTime, WallJumpYForce * Time.fixedDeltaTime);
+            IsSliding = false;
         }
     }
 
-    IEnumerator WallForce()
+    void WallJump()
     {
-        DoingWallForce = true;
+        if(IsSliding & CanSlide)
+        {
+            IsWallJumping = false; 
+            WallJumpingTimer = WallJumpingTime;
 
-        yield return new WaitForSeconds(WallJumpTime);
-        
-        DoingWallForce = false;
+            if(Input.GetButton("Jump"))
+            {
+                IsWallJumping = true;
+                Rb.velocity = new Vector2(-LastDirection * WallJumpingForce.x, WallJumpingForce.y) * Time.fixedDeltaTime;
+           
+                float Angle = (transform.eulerAngles.y == 0 ? 180 : 0);
+                transform.eulerAngles = new Vector2(transform.eulerAngles.x, Angle);
+                
+                Invoke(nameof(StopWallJump), WallJumpingTime);
+                Invoke(nameof(ResetSliding), 0.1f);
+                CanSlide = false;
+            }
+
+
+            CancelInvoke(nameof(StopWallJump));
+        }
+        else
+        {
+            WallJumpingTimer -= Time.deltaTime;
+        }
+
+        if(Input.GetButtonDown("Jump") && WallJumpingTimer > 0f)
+        {
+            IsWallJumping = true;
+            Rb.velocity = new Vector2(-LastDirection * WallJumpingForce.x, WallJumpingForce.y) * Time.fixedDeltaTime;
+            WallJumpingTimer = 0;
+           
+            float Angle = (transform.eulerAngles.y == 0 ? 180 : 0);
+            transform.eulerAngles = new Vector2(transform.eulerAngles.x, Angle);
+
+            Invoke(nameof(StopWallJump), WallJumpingTime);
+        }
+
+        if(IsGrounded)
+        {
+            StopWallJump();
+        }
     }
+
+    void StopWallJump()
+    {
+        IsWallJumping = false;
+    }
+
+    void ResetSliding()
+    {
+        CanSlide = true;
+    }
+
+
 
     #endregion
     

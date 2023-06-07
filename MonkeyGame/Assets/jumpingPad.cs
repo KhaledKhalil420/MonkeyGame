@@ -1,21 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class jumpingPad : MonoBehaviour
 {
-    public float jumpForce;
+    [SerializeField] private float jumpForce;
+    private Animator Anim;
 
-    /// <summary>
-    /// Sent when another object enters a trigger collider attached to this
-    /// object (2D physics only).
-    /// </summary>
-    /// <param name="other">The other Collider2D involved in this collision.</param>
+    private void Start()
+    {
+        Anim = GetComponent<Animator>();
+    }
+
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Player"))
         {
-            other.GetComponent<Rigidbody2D>().AddForce(transform.up * jumpForce);
+            other.GetComponent<PlayerMovement>().Jump(jumpForce);
+            Anim.SetTrigger("Spring");
         }
     }
 }

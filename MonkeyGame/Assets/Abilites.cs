@@ -12,6 +12,8 @@ public class Abilites : EasyNetworkBehaviour
     private BoxCollider2D BoxCollider;
     private SpriteRenderer spriteRenderer;
 
+    private float OldPlayerSpeed;
+
     private void Start()
     {
         BoxCollider = GetComponent<BoxCollider2D>();
@@ -27,11 +29,13 @@ public class Abilites : EasyNetworkBehaviour
             switch(PowerUp)
             {
                 case PlayerUpgrade.SpeedBoost:
+                OldPlayerSpeed = Player.GetComponent<PlayerMovement>().Speed;
                 StartCoroutine(SpeedBoost());
                 break;
 
 
                 case PlayerUpgrade.Slowness:
+                OldPlayerSpeed = Player.GetComponent<PlayerMovement>().Speed;
                 StartCoroutine(Slowness());
                 break;
 
@@ -48,7 +52,7 @@ public class Abilites : EasyNetworkBehaviour
 
     IEnumerator SpeedBoost()
     {
-        float OldPlayerSpeed = Player.GetComponent<PlayerMovement>().Speed;
+        OldPlayerSpeed = Player.GetComponent<PlayerMovement>().Speed;
         Player.GetComponent<PlayerMovement>().Speed = Player.GetComponent<PlayerMovement>().Speed * 1.5f;
 
         BoxCollider.enabled = false;
@@ -57,11 +61,12 @@ public class Abilites : EasyNetworkBehaviour
         yield return new WaitForSeconds(5);
 
         Player.GetComponent<PlayerMovement>().Speed = OldPlayerSpeed;
+        NetworkObject.Despawn(true);
     }
 
     IEnumerator Slowness()
     {
-        float OldPlayerSpeed = Player.GetComponent<PlayerMovement>().Speed;
+        Player.GetComponent<PlayerMovement>().Speed = OldPlayerSpeed;
         Player.GetComponent<PlayerMovement>().Speed = Player.GetComponent<PlayerMovement>().Speed / 1.5f;
 
         BoxCollider.enabled = false;
@@ -70,11 +75,13 @@ public class Abilites : EasyNetworkBehaviour
         yield return new WaitForSeconds(5);
 
         Player.GetComponent<PlayerMovement>().Speed = OldPlayerSpeed;
+        NetworkObject.Despawn(true);
     }
 
     public void Jump()
     {
         Player.GetComponent<PlayerMovement>().Jump(600);
+        NetworkObject.Despawn(true);
     }
 
     IEnumerator CameraFlip()
@@ -87,10 +94,6 @@ public class Abilites : EasyNetworkBehaviour
         yield return new WaitForSeconds(5);
 
         Camera.main.transform.eulerAngles = new Vector3(0, 0, 0);
-    }
-
-    void DespawnPlayer()
-    {
-        GetComponent<NetworkObject>().Despawn(false);
+        NetworkObject.Despawn(true);
     }
 }
