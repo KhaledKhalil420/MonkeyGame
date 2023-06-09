@@ -10,7 +10,9 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         //Add Bullet Behaviour
-        GetComponent<Rigidbody2D>().velocity += new Vector2(CannonBallSpeed * Time.fixedDeltaTime, 0);
-        Destroy(gameObject, CannonBallLifeSpan);   
+        Rigidbody2D Rb = GetComponent<Rigidbody2D>();
+        Rb.velocity += new Vector2(transform.right.x * CannonBallSpeed, Rb.velocity.y);
+        
+        Destroy(gameObject, CannonBallLifeSpan); 
     }
 }
