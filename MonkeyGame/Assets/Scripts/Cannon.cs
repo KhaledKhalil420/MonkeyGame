@@ -23,7 +23,7 @@ public class Cannon : MonoBehaviour
         
         //Spawn Bullet
         GameObject SpawnedObj = Instantiate(CannonBall, ShootingPosition.position, ShootingPosition.rotation);
-        SpawnedObj.GetComponent<NetworkObject>().Spawn();
+        //SpawnedObj.GetComponent<NetworkObject>().Spawn(true);
         
 
         //Effect

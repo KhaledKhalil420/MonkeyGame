@@ -64,6 +64,8 @@ public class PlayerMovement : NetworkBehaviour
         CayoteJump();
         DrawRayCasts();
         if(Anim != null) SetAnimations();
+
+        WallJump();
     }
 
 
@@ -71,7 +73,6 @@ public class PlayerMovement : NetworkBehaviour
     void FixedUpdate()
     {
         WallSlide();
-        WallJump();
         ApplyMovement();   
     }
     
@@ -118,11 +119,6 @@ public class PlayerMovement : NetworkBehaviour
                 Rb.gravityScale = GravityLowJump;
             }
         }
-
-        if(Input.GetButtonDown("Jump") & IsWalled)
-        {
-            
-        }
     }
         
     void SetAnimations()
@@ -147,15 +143,15 @@ public class PlayerMovement : NetworkBehaviour
     #region  WallJump
 
     void WallSlide()
-    {
-        if(IsWalled & !IsGrounded && MovementX != 0 & CanSlide)
         {
-            IsSliding = true;
-            Rb.velocity = new Vector2(Rb.velocity.x, Mathf.Clamp(Rb.velocity.y, -WallSidingSpeed, float.MaxValue) * Time.fixedDeltaTime);
-        }
-        else
-        {
-            IsSliding = false;
+            if(IsWalled & !IsGrounded && MovementX != 0 & CanSlide)
+            {
+                IsSliding = true;
+                Rb.velocity = new Vector2(Rb.velocity.x, Mathf.Clamp(Rb.velocity.y, -WallSidingSpeed, float.MaxValue) * Time.fixedDeltaTime);
+            }
+            else
+            {
+                IsSliding = false;
         }
     }
 
@@ -166,7 +162,7 @@ public class PlayerMovement : NetworkBehaviour
             IsWallJumping = false; 
             WallJumpingTimer = WallJumpingTime;
 
-            if(Input.GetButton("Jump"))
+            if(Input.GetKeyDown(KeyCode.Space))
             {
                 IsWallJumping = true;
                 Rb.velocity = new Vector2(-LastDirection * WallJumpingForce.x, WallJumpingForce.y) * Time.fixedDeltaTime;

@@ -24,6 +24,11 @@ public class spawnManager : NetworkBehaviour
         spawnPlayerServerRpc(NetworkManager.LocalClientId);
     }
 
+    private void Update()
+    {
+        if(instance == null) instance = this;
+    }
+
     IEnumerator spawnPlayers()
     {
         yield return new WaitForSeconds(2);
