@@ -47,6 +47,9 @@ public class PlayerMovement : NetworkBehaviour
 
     [SerializeField] private bool IsOffline;
 
+    //particles
+    [SerializeField] ParticleSystem dust;
+
 
     void Start()
     {
@@ -56,6 +59,8 @@ public class PlayerMovement : NetworkBehaviour
 
     void Update()
     {
+        playDust();
+
         if(!IsClient & !IsOffline) return;
 
         if(Instance == null) Instance = this;
@@ -134,6 +139,21 @@ public class PlayerMovement : NetworkBehaviour
         transform.eulerAngles = new Vector2(transform.eulerAngles.x, Angle);
     }
 
+    bool canDust;
+    void playDust()
+    {
+        if(IsGrounded)
+        {
+            if(canDust)
+            {
+                dust.Play();
+                canDust = false;
+            }
+        }
+        else
+        canDust = true;
+    }
+
     void ApplyMovement()
     {
         if(!IsWallJumping)
@@ -147,6 +167,7 @@ public class PlayerMovement : NetworkBehaviour
             if(IsWalled & !IsGrounded && MovementX != 0 & CanSlide)
             {
                 IsSliding = true;
+                if(Input.GetKey(KeyCode.LeftShift))
                 Rb.velocity = new Vector2(Rb.velocity.x, Mathf.Clamp(Rb.velocity.y, -WallSidingSpeed, float.MaxValue) * Time.fixedDeltaTime);
             }
             else

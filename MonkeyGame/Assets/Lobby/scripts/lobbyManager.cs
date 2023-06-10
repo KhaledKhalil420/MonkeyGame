@@ -187,34 +187,44 @@ public class lobbyManager : MonoBehaviour
     {
         try
         {
-            UpdatePlayerOptions playerOptions = new UpdatePlayerOptions();
-            playerOptions.Data = new Dictionary<string, PlayerDataObject>()
-            {
-                {
-                    "playerName", new PlayerDataObject(visibility: PlayerDataObject.VisibilityOptions.Member, value: playerName)
-                },
-                {
-                    "playerId", new PlayerDataObject(visibility: PlayerDataObject.VisibilityOptions.Member, value: "0")
-                }
-            };
+            QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync();
 
-            Lobby joinedLobby = await Lobbies.Instance.QuickJoinLobbyAsync();
-            string playerId = AuthenticationService.Instance.PlayerId;
-            joinedLobby = await LobbyService.Instance.UpdatePlayerAsync(joinedLobby.Id, playerId, playerOptions);
-            string JoinCode = joinedLobby.Data["RelayCode"].Value;
-            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(JoinCode);
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData(
-                joinAllocation.RelayServer.IpV4,
-                (ushort)joinAllocation.RelayServer.Port,
-                joinAllocation.AllocationIdBytes,
-                joinAllocation.Key,
-                joinAllocation.ConnectionData,
-                joinAllocation.HostConnectionData
-            );
-            currentLobby = joinedLobby;
-            NetworkManager.Singleton.StartClient();
-            Debug.Log(joinedLobby.Name + JoinCode);
-            playerOptions.Data["playerId"].Value = NetworkManager.Singleton.LocalClientId.ToString();
+            if(queryResponse.Results.Count > 0)
+            {
+                UpdatePlayerOptions playerOptions = new UpdatePlayerOptions();
+                playerOptions.Data = new Dictionary<string, PlayerDataObject>()
+                {
+                    {
+                        "playerName", new PlayerDataObject(visibility: PlayerDataObject.VisibilityOptions.Member, value: playerName)
+                    },
+                    {
+                        "playerId", new PlayerDataObject(visibility: PlayerDataObject.VisibilityOptions.Member, value: "0")
+                    }
+                };
+
+                Lobby joinedLobby = await Lobbies.Instance.QuickJoinLobbyAsync();
+                string playerId = AuthenticationService.Instance.PlayerId;
+                joinedLobby = await LobbyService.Instance.UpdatePlayerAsync(joinedLobby.Id, playerId, playerOptions);
+                string JoinCode = joinedLobby.Data["RelayCode"].Value;
+                JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(JoinCode);
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData(
+                    joinAllocation.RelayServer.IpV4,
+                    (ushort)joinAllocation.RelayServer.Port,
+                    joinAllocation.AllocationIdBytes,
+                    joinAllocation.Key,
+                    joinAllocation.ConnectionData,
+                    joinAllocation.HostConnectionData
+                );
+                currentLobby = joinedLobby;
+                NetworkManager.Singleton.StartClient();
+                Debug.Log(joinedLobby.Name + JoinCode);
+                playerOptions.Data["playerId"].Value = NetworkManager.Singleton.LocalClientId.ToString();
+
+            }
+            else
+            {
+                HostAsync();
+            }
 
         }
         catch (Exception e) 
