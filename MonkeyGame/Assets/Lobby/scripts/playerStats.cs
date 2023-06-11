@@ -17,12 +17,12 @@ public class playerStats : NetworkBehaviour
 
     public TMP_Text nameText;
 
-    public GameObject winScreen;
-    public GameObject loseScreen;
+    GameObject winScreen;
+    GameObject loseScreen;
 
     public void Update()
     {
-        outLine.material = spawnManager.instance.teams[teamId.Value].teamColor;
+        //outLine.material = spawnManager.instance.teams[teamId.Value].teamColor;
     }
 
     /// <summary>
@@ -36,34 +36,44 @@ public class playerStats : NetworkBehaviour
 
         if(other.CompareTag("winBanana"))
         {
-            spawnManager.instance.winManagerServerRpc(teamId.Value);
+            spawnManager.instance.winManagerServerRpc((int)OwnerClientId);
+            Debug.Log("hit banana");
         }
     }
 
     public override void OnNetworkSpawn()
     {
-        if(IsOwner) winScreen.transform.parent.GetComponent<Canvas>().worldCamera = Camera.main;
-        else Destroy(winScreen.transform.parent.gameObject);
-
         nameText.text = lobbyManager.Instance.currentLobby.Players[(int)NetworkManager.LocalClientId].Data["playerName"].Value;
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void winServerRpc(int winnerTeamId)
+    public void winServerRpc(int winnerId)
     {
-        winClientRpc(winnerTeamId);
+        winClientRpc(winnerId);
     }
 
     [ClientRpc]
-    void winClientRpc(int winnerTeamId)
+    void winClientRpc(int winnerId)
     {
-        handleWin(winnerTeamId);
+        handleWin(winnerId);
     }
 
 
-    void handleWin(int winnerTeamId)
+    void handleWin(int winnerId)
     {
-        if(teamId.Value == winnerTeamId) winScreen.SetActive(true);
-        if(teamId.Value != winnerTeamId) loseScreen.SetActive(true);
+        Debug.Log("handleWin");
+        if((int)OwnerClientId == winnerId)
+        {
+            winScreen = GameObject.FindGameObjectWithTag("win");
+            winScreen.SetActive(true);
+            winScreen.transform.GetChild(1).GetComponent<TMP_Text>().text = lobbyManager.Instance.currentLobby.Players[winnerId].Data["playerName"].Value + "win!";
+        }
+        if((int)OwnerClientId != winnerId)
+        {
+            winScreen = GameObject.FindGameObjectWithTag("lose");
+            loseScreen.SetActive(true);
+            loseScreen.transform.GetChild(1).GetComponent<TMP_Text>().text = lobbyManager.Instance.currentLobby.Players[winnerId].Data["playerName"].Value + "win!";
+        }
+        
     }
 }
