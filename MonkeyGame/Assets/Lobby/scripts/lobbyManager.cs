@@ -323,7 +323,7 @@ public class lobbyManager : MonoBehaviour
 
     #region gameRounds
 
-    int curRound;
+    public int curRound;
 
 
     int [] numbers = new int[3];
@@ -360,6 +360,8 @@ public class lobbyManager : MonoBehaviour
 
         string sceneName = Path.GetFileNameWithoutExtension(scenesFiles()[numbers[curRound]].Name);
         NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+
+        curRound++;
     }
 
     FileInfo[] scenesFiles()

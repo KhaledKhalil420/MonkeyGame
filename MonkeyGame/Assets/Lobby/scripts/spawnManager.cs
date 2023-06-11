@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using TMPro;
 
 public class spawnManager : NetworkBehaviour
 {
@@ -14,14 +15,23 @@ public class spawnManager : NetworkBehaviour
 
     bool spawnedPlayers = false;
 
+    public bool useTeams;
+
     public List<Teams> teams = new List<Teams>();
 
+    public List<GameObject> players;
+
+    public TMP_Text roundText;
+
     public static spawnManager instance;
+    
 
     void Start()
     {
         if(instance == null) instance = this;
         spawnPlayerServerRpc(NetworkManager.LocalClientId);
+
+        roundText.text = "Round" + lobbyManager.Instance.curRound;
     }
 
     private void Update()
@@ -50,6 +60,9 @@ public class spawnManager : NetworkBehaviour
         NetworkObject p = NetworkManager.Instantiate(playerPrefab, spawnPoint[randomSpawnPoint].position, Quaternion.identity);
         p.SpawnAsPlayerObject((ulong)id);
 
+        players.Add(p.gameObject);
+
+        if(!useTeams) return;
         //add the player to a random team
         int randomTeam = Random.Range(0, teams.Count);
         if(teams[randomTeam].playersInTeam.Count < teams[randomTeam].maxPlayersInTeam)
