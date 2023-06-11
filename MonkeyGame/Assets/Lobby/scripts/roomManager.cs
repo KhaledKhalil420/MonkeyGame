@@ -5,19 +5,27 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.Netcode;
 using System.IO;
+using Unity.Services.Lobbies;
+using Unity.Services.Lobbies.Models;
 
 public class roomManager : MonoBehaviour
 {
-
-    public TMP_Text gameStatsText;
-
-    public TMP_Text timerText; 
+    [SerializeField] TMP_Text playersInGame; 
     [SerializeField] float maxStartTime = 5;
     [SerializeField] float minPlayersCount = 2;
     float StartTime;
 
-    public levelButton levelButton;
-    public Transform buttonsHolder;
+    [SerializeField] levelButton levelButton;
+    [SerializeField] Transform buttonsHolder;
+
+    [SerializeField] Transform playerHolder;
+    [SerializeField] lobbyPlayerObject player;
+
+    [SerializeField] Animator anim;
+
+    [SerializeField] bool developerMode;
+    
+    
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -33,24 +41,36 @@ public class roomManager : MonoBehaviour
     void Update()
     {
         hostManangment();
+        checkIfConnected();
+    }
+
+    bool connected;
+    void checkIfConnected()
+    {
+        connected = NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsHost;
+
+        if(connected)
+        {
+            anim.SetBool("Connected", true);
+        }
     }
 
     void hostManangment()
     {
         if(!NetworkManager.Singleton.IsClient)
         {
-            transform.GetChild(0).gameObject.SetActive(false);
+            //transform.GetChild(0).gameObject.SetActive(false);
             return;
         }
-        transform.GetChild(0).gameObject.SetActive(true);
+        //transform.GetChild(0).gameObject.SetActive(true);
 
-        gameStatsText.gameObject.SetActive(true);
+        //gameStatsText.gameObject.SetActive(true);
 
         if(!NetworkManager.Singleton.IsHost) return;
         
         if(NetworkManager.Singleton.ConnectedClients.Count < minPlayersCount)
         {
-            gameStatsText.text = "players : " + NetworkManager.Singleton.ConnectedClients.Count + " / 2";
+            playersInGame.text = "players : " + NetworkManager.Singleton.ConnectedClients.Count + " / " + maxStartTime;
         }
         if(NetworkManager.Singleton.ConnectedClients.Count >= minPlayersCount)
         {
@@ -58,8 +78,10 @@ public class roomManager : MonoBehaviour
             //gameStatsText.text = "Starting in " + StartTime.ToString("0");
 
             if(!NetworkManager.Singleton.IsHost) return;
-            //if(StartTime <= 0)
+            if(developerMode)
             loadLevelButtons();
+            else
+            loadPlayers();
         }
     }
 
@@ -83,10 +105,26 @@ public class roomManager : MonoBehaviour
         loadedLevels = true;
     }
 
-    void startGame()
+    bool loadedPlayers;
+    void loadPlayers()
     {
-        lobbyManager.Instance.UpdateJoinedLobby();
-        //NetworkManager.Singleton.SceneManager.LoadScene(gameScene, LoadSceneMode.Single);
+        anim.SetTrigger("startGame");
+        if(loadedPlayers) return;
+
+        buttonsHolder.gameObject.SetActive(true);
+
+        foreach(Player lobbyPlayer in lobbyManager.Instance.currentLobby.Players)
+        {
+            lobbyPlayerObject p = Instantiate(player, playerHolder);
+            p.name = lobbyPlayer.Data["playerName"].Value;            
+        }
+
+        loadedPlayers = true;
+    }
+
+    public void startGame()
+    {
+        lobbyManager.Instance.loadNextRound();
     }
 
 }

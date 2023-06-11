@@ -14,6 +14,7 @@ using TMPro;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 using System;
+using System.IO;
 
 public class lobbyManager : MonoBehaviour
 {
@@ -41,7 +42,7 @@ public class lobbyManager : MonoBehaviour
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
-    void Awake()
+    void Start()
     {
         if(Instance == null)
         {
@@ -65,6 +66,7 @@ public class lobbyManager : MonoBehaviour
         {
             GetLobbyTime -= Time.deltaTime;
         }
+        if(Input.GetKeyDown(KeyCode.R)) pickRandomLevels();
     }
 
     private async void HandleLobbyHeartBeat()
@@ -133,6 +135,8 @@ public class lobbyManager : MonoBehaviour
             NetworkManager.Singleton.StartHost();
             Debug.Log("Creadet lobby " + lobby.Name + RelayCode);
             playerOptions.Data["playerId"].Value = NetworkManager.Singleton.LocalClientId.ToString();
+
+            
             
         }
         catch
@@ -316,4 +320,53 @@ public class lobbyManager : MonoBehaviour
             nameFieald.transform.parent.gameObject.SetActive(false);
         }
     }
+
+    #region gameRounds
+
+    int curRound;
+
+
+    int [] numbers = new int[3];
+    void pickRandomLevels()
+    {
+       //having an int Array of 3 members
+       //using a string variable to keep record of the used numbers
+       string usedNumbers ="-";
+
+       //cycle to get 10 random numbers
+       for (int i = 0 ; i<3; i++)
+       {
+        //get a random number between 0 - 120, 0 and 120 included on the random numbers
+        int randomNumber = UnityEngine.Random.Range(0,scenesFiles().Length);
+        //Checking if the random number you get is unique, if you already have it in the string means that this random number is repeated, the "-X-" is to make the difference between the numbers, like -1- from -11-, if you dont have the "-X-" the 1 is in 21 and would be a "repeated" number
+        while(usedNumbers.Contains("-"+randomNumber.ToString()+"-"))
+        {
+             //if a number is repeated, then get a new random number
+             randomNumber = UnityEngine.Random.Range(0,scenesFiles().Length);
+        }
+        usedNumbers+= randomNumber.ToString()+"-";
+        numbers[i] = randomNumber;
+        }
+
+        foreach(int i in numbers)
+        {
+            Debug.Log(i);
+        }
+    }
+
+    public void loadNextRound()
+    {
+        pickRandomLevels();
+
+        string sceneName = Path.GetFileNameWithoutExtension(scenesFiles()[numbers[curRound]].Name);
+        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
+
+    FileInfo[] scenesFiles()
+    {
+        DirectoryInfo dir = new DirectoryInfo("Assets/Levels");
+        return dir.GetFiles("*.unity");
+    }
+        
+    #endregion
 }
