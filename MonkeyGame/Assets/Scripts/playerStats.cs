@@ -20,6 +20,15 @@ public class playerStats : NetworkBehaviour
     GameObject winScreen;
     GameObject loseScreen;
 
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
+    {
+        spawnManager.instance.handleGameMode();
+    }
+
     public void Update()
     {
         //outLine.material = spawnManager.instance.teams[teamId.Value].teamColor;
@@ -49,12 +58,14 @@ public class playerStats : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void winServerRpc(int winnerId)
     {
+        Debug.Log("winServerRpc");
         winClientRpc(winnerId);
     }
 
     [ClientRpc]
     void winClientRpc(int winnerId)
     {
+        Debug.Log("winClientRpc");
         handleWin(winnerId);
     }
 

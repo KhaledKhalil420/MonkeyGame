@@ -11,8 +11,6 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using Unity.Netcode.Transports.UTP;
 using TMPro;
-using UnityEngine.Networking;
-using System.Threading.Tasks;
 using System;
 using System.IO;
 
@@ -66,7 +64,6 @@ public class lobbyManager : MonoBehaviour
         {
             GetLobbyTime -= Time.deltaTime;
         }
-        if(Input.GetKeyDown(KeyCode.R)) pickRandomLevels();
     }
 
     private async void HandleLobbyHeartBeat()
@@ -191,10 +188,13 @@ public class lobbyManager : MonoBehaviour
     {
         try
         {
+            //request a list of all public lobbies
             QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync();
 
+            //check if lobbies fount is more than 0 than join a random lobby else create a lobby
             if(queryResponse.Results.Count > 0)
             {
+                //set player data
                 UpdatePlayerOptions playerOptions = new UpdatePlayerOptions();
                 playerOptions.Data = new Dictionary<string, PlayerDataObject>()
                 {
@@ -206,11 +206,22 @@ public class lobbyManager : MonoBehaviour
                     }
                 };
 
+                //join random lobby
                 Lobby joinedLobby = await Lobbies.Instance.QuickJoinLobbyAsync();
+                
+                //get player id
                 string playerId = AuthenticationService.Instance.PlayerId;
+
+                //update joined lobby player data
                 joinedLobby = await LobbyService.Instance.UpdatePlayerAsync(joinedLobby.Id, playerId, playerOptions);
+                
+                //get joined lobby ralay code
                 string JoinCode = joinedLobby.Data["RelayCode"].Value;
+                
+                //join lobby's relay
                 JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(JoinCode);
+                
+                //update UnityTransport data
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData(
                     joinAllocation.RelayServer.IpV4,
                     (ushort)joinAllocation.RelayServer.Port,
@@ -221,7 +232,6 @@ public class lobbyManager : MonoBehaviour
                 );
                 currentLobby = joinedLobby;
                 NetworkManager.Singleton.StartClient();
-                Debug.Log(joinedLobby.Name + JoinCode);
                 playerOptions.Data["playerId"].Value = NetworkManager.Singleton.LocalClientId.ToString();
 
             }
@@ -239,25 +249,29 @@ public class lobbyManager : MonoBehaviour
 
     public async void ListLobby()
     {
+        //make a list of all public lobbies
+
         try
         {
-        foreach(GameObject room in roomsList)
-        {
-            Destroy(room);
-        }
+            //remove all lobby objects
+            foreach(GameObject room in roomsList)
+            {
+                Destroy(room);
+            }
 
-        roomsList.Clear();
+            roomsList.Clear();
 
-        QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync();
+            //request a list of all public lobbies
+
+            QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync();
         
-
-        Debug.Log("Lobbies found: " + queryResponse.Results.Count);
-        foreach(Lobby lobby in queryResponse.Results)
-        {
-            GameObject room = Instantiate(roomObject, roomsHolder);
-            //room.GetComponent<RoomObject>().lobby = lobby;
-            roomsList.Add(room);
-        }
+            //create an object for each founded lobby
+            foreach(Lobby lobby in queryResponse.Results)
+            {
+                GameObject room = Instantiate(roomObject, roomsHolder);
+                //room.GetComponent<RoomObject>().lobby = lobby;
+                roomsList.Add(room);
+            }
         }
         catch
         {
@@ -279,6 +293,7 @@ public class lobbyManager : MonoBehaviour
 
     public async void UpdateJoinedLobby()
     {
+        //update joined lobbyVariable to get new lobby info
         try
         {
             if(GetLobbyTime <= 0)
@@ -297,6 +312,7 @@ public class lobbyManager : MonoBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void spawnNetWorkObject(NetworkObject objectToSpawm)
     {
+        //spawn network object
         objectToSpawm.Spawn();
     }
 
@@ -329,43 +345,43 @@ public class lobbyManager : MonoBehaviour
     int [] numbers = new int[3];
     void pickRandomLevels()
     {
-       //having an int Array of 3 members
-       //using a string variable to keep record of the used numbers
-       string usedNumbers ="-";
+        //having an int Array of 3 members
+        //using a string variable to keep record of the used numbers
+        string usedNumbers ="-";
 
-       //cycle to get 10 random numbers
-       for (int i = 0 ; i<3; i++)
-       {
-        //get a random number between 0 - 120, 0 and 120 included on the random numbers
-        int randomNumber = UnityEngine.Random.Range(0,scenesFiles().Length);
-        //Checking if the random number you get is unique, if you already have it in the string means that this random number is repeated, the "-X-" is to make the difference between the numbers, like -1- from -11-, if you dont have the "-X-" the 1 is in 21 and would be a "repeated" number
-        while(usedNumbers.Contains("-"+randomNumber.ToString()+"-"))
+        //cycle to get 10 random numbers
+        for (int i = 0 ; i<3; i++)
         {
-             //if a number is repeated, then get a new random number
-             randomNumber = UnityEngine.Random.Range(0,scenesFiles().Length);
-        }
-        usedNumbers+= randomNumber.ToString()+"-";
-        numbers[i] = randomNumber;
-        }
-
-        foreach(int i in numbers)
-        {
-            Debug.Log(i);
+            //get a random number between 0 - 120, 0 and 120 included on the random numbers
+            int randomNumber = UnityEngine.Random.Range(0,scenesFiles().Length);
+            //Checking if the random number you get is unique, if you already have it in the string means that this random number is repeated, the "-X-" is to make the difference between the numbers, like -1- from -11-, if you dont have the "-X-" the 1 is in 21 and would be a "repeated" number
+            while(usedNumbers.Contains("-"+randomNumber.ToString()+"-"))
+            {
+                 //if a number is repeated, then get a new random number
+                randomNumber = UnityEngine.Random.Range(0,scenesFiles().Length);
+            }
+            usedNumbers+= randomNumber.ToString()+"-";
+            numbers[i] = randomNumber;
         }
     }
 
     public void loadNextRound()
     {
+        //get random levels
         pickRandomLevels();
 
+        //go to first level of the random levels
         string sceneName = Path.GetFileNameWithoutExtension(scenesFiles()[numbers[curRound]].Name);
         NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 
+        //update the current round
         curRound++;
     }
 
     FileInfo[] scenesFiles()
     {
+        //returns a list of all scenes in Assets/Levels folder
+
         DirectoryInfo dir = new DirectoryInfo("Assets/Levels");
         return dir.GetFiles("*.unity");
     }

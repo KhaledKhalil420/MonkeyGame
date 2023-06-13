@@ -13,16 +13,23 @@ public class spawnManager : NetworkBehaviour
 
     Lobby lobby;
 
-    bool spawnedPlayers = false;
+    [Header("Teams")]
 
     public bool useTeams;
 
     public List<Teams> teams = new List<Teams>();
 
-    public List<GameObject> players;
+    List<GameObject> players;
 
+    [Header("UI")]
     public TMP_Text roundText;
 
+
+    public enum gameMode {normal, flipGravity};
+    [Header("Game mode")]
+    public gameMode gamemode;
+
+    
     public static spawnManager instance;
     
 
@@ -37,19 +44,6 @@ public class spawnManager : NetworkBehaviour
     private void Update()
     {
         if(instance == null) instance = this;
-    }
-
-    IEnumerator spawnPlayers()
-    {
-        yield return new WaitForSeconds(2);
-        //spawn a player prefab for each player in the joibed lobby
-        for (int i = 0; i < lobbyManager.Instance.currentLobby.Players.Count; i++)
-        {
-            NetworkObject p = NetworkManager.Instantiate(playerPrefab, spawnPoint[i].position, Quaternion.identity);
-            int playerId;
-            int.TryParse(lobbyManager.Instance.currentLobby.Players[i].Data["playerId"].Value, out playerId);
-            p.SpawnAsPlayerObject((ulong)playerId);
-        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -81,15 +75,27 @@ public class spawnManager : NetworkBehaviour
         }
     }
 
+    public void handleGameMode()
+    {
+        GameObject localPlayerObject = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+
+        switch (gamemode)
+        {
+            case  gameMode.normal:
+            break;
+
+            case gameMode.flipGravity:
+            localPlayerObject.GetComponent<Rigidbody2D>().gravityScale = -localPlayerObject.GetComponent<Rigidbody2D>().gravityScale;
+            break;
+        }
+    }
+
     [ServerRpc(RequireOwnership = false)]
     public void winManagerServerRpc(int win)
     {
-        foreach (Teams team in teams)
+        foreach (GameObject player in players)
         {
-            foreach (GameObject player in team.playersInTeam)
-            {
                 player.GetComponent<playerStats>().winServerRpc(win);
-            }
         }
     }
 }
