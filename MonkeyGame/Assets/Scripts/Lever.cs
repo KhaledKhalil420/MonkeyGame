@@ -52,6 +52,6 @@ public class Lever : MonoBehaviour
         if(LinkedObjectITriggerable != null)
         LinkedObjectITriggerable.Trigger();
 
-        SpriteRenderer.flipX = !SpriteRenderer.flipX;
+        transform.localScale = new Vector2(-transform.localScale.x, 1);
     }
 }
