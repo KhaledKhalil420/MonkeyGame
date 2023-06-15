@@ -370,7 +370,7 @@ public class lobbyManager : MonoBehaviour
 
         //go to first level of the random levels
         string sceneName = Path.GetFileNameWithoutExtension(scenesFiles()[numbers[curRound]].Name);
-        NetworkManager.Singleton.SceneManager.LoadScene("k_level 1", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 
         //update the current round
         curRound++;
