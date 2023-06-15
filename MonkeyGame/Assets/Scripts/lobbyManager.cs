@@ -35,6 +35,8 @@ public class lobbyManager : MonoBehaviour
 
     float GetLobbyTime = 0;
 
+    public TMP_InputField codeField;
+
     
 
     /// <summary>
@@ -47,10 +49,6 @@ public class lobbyManager : MonoBehaviour
             Instance = this;
         }
     }
-
-
-    bool offline;
-
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -142,7 +140,7 @@ public class lobbyManager : MonoBehaviour
         }
     }
 
-    public async void JoinLobby(Lobby lobby)
+    public async void JoinLobby()
     {
         try
         {
@@ -158,7 +156,7 @@ public class lobbyManager : MonoBehaviour
             };
             
 
-            Lobby joinedLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobby.Id);
+            Lobby joinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(codeField.text);
             string playerId = AuthenticationService.Instance.PlayerId;
             joinedLobby = await LobbyService.Instance.UpdatePlayerAsync(joinedLobby.Id, playerId, playerOptions);
             string JoinCode = joinedLobby.Data["RelayCode"].Value;

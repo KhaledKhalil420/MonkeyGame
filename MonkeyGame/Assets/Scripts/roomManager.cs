@@ -24,6 +24,8 @@ public class roomManager : MonoBehaviour
     [SerializeField] Animator anim;
 
     [SerializeField] bool developerMode;
+
+    [SerializeField] TMP_InputField codeField;
     
     
 
@@ -52,6 +54,7 @@ public class roomManager : MonoBehaviour
         if(connected)
         {
             anim.SetBool("Connected", true);
+            codeField.text = lobbyManager.Instance.currentLobby.LobbyCode;
         }
     }
 
@@ -122,9 +125,9 @@ public class roomManager : MonoBehaviour
         loadedPlayers = true;
     }
 
+
     public void startGame()
     {
         lobbyManager.Instance.loadNextRound();
     }
-
 }

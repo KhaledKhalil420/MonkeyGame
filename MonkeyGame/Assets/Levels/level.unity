@@ -7942,8 +7942,8 @@ MonoBehaviour:
   - {fileID: 857652465}
   useTeams: 0
   teams: []
-  players: []
   roundText: {fileID: 418729617}
+  gamemode: 0
 --- !u!1 &1851614996
 GameObject:
   m_ObjectHideFlags: 0

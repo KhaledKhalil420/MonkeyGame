@@ -19,7 +19,7 @@ public class spawnManager : NetworkBehaviour
 
     public List<Teams> teams = new List<Teams>();
 
-    List<GameObject> players;
+    public List<NetworkObject> players;
 
     [Header("UI")]
     public TMP_Text roundText;
@@ -54,7 +54,7 @@ public class spawnManager : NetworkBehaviour
         NetworkObject p = NetworkManager.Instantiate(playerPrefab, spawnPoint[randomSpawnPoint].position, Quaternion.identity);
         p.SpawnAsPlayerObject((ulong)id);
 
-        players.Add(p.gameObject);
+        players.Add(p);
 
         if(!useTeams) return;
         //add the player to a random team
@@ -93,9 +93,9 @@ public class spawnManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void winManagerServerRpc(int win)
     {
-        foreach (GameObject player in players)
+        foreach (NetworkObject player in players)
         {
-                player.GetComponent<playerStats>().winServerRpc(win);
+            player.GetComponent<playerStats>().winServerRpc(win);
         }
     }
 }
