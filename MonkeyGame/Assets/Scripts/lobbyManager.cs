@@ -184,8 +184,8 @@ public class lobbyManager : MonoBehaviour
 
     public async void joinRandomRoom()
     {
-        try
-        {
+        //try
+        //{
             //request a list of all public lobbies
             QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync();
 
@@ -238,11 +238,11 @@ public class lobbyManager : MonoBehaviour
                 HostAsync();
             }
 
-        }
-        catch (Exception e) 
-        {
-            Debug.Log(e);
-        }
+        //}
+        //catch (Exception e) 
+        //{
+          //  Debug.Log(e);
+        //}
     }
 
     public async void ListLobby()
