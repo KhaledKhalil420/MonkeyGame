@@ -75,15 +75,15 @@ public class playerStats : NetworkBehaviour
         Debug.Log("handleWin");
         if((int)OwnerClientId == winnerId)
         {
-            winScreen = GameObject.FindGameObjectWithTag("win");
+            winScreen = spawnManager.instance.winPanel;
             winScreen.SetActive(true);
-            winScreen.transform.GetChild(1).GetComponent<TMP_Text>().text = lobbyManager.Instance.currentLobby.Players[winnerId].Data["playerName"].Value + "win!";
+            winScreen.transform.GetChild(1).GetComponent<TMP_Text>().text = lobbyManager.Instance.currentLobby.Players[winnerId].Data["playerName"].Value + " win!";
         }
         if((int)OwnerClientId != winnerId)
         {
-            winScreen = GameObject.FindGameObjectWithTag("lose");
+            winScreen = spawnManager.instance.winPanel;
             loseScreen.SetActive(true);
-            loseScreen.transform.GetChild(1).GetComponent<TMP_Text>().text = lobbyManager.Instance.currentLobby.Players[winnerId].Data["playerName"].Value + "win!";
+            loseScreen.transform.GetChild(1).GetComponent<TMP_Text>().text = lobbyManager.Instance.currentLobby.Players[winnerId].Data["playerName"].Value + " win!";
         }
         
     }

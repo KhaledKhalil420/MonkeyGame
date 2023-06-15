@@ -13155,15 +13155,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ff0469154b48e4ca36671d5d7df84e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 3119225250858093403, guid: 4f131e29c30d20342b56befd62c040c1, type: 3}
+  playerPrefab: {fileID: 7553919471352452769, guid: 4f131e29c30d20342b56befd62c040c1, type: 3}
   spawnPoint:
   - {fileID: 1378773126}
   - {fileID: 1087746713}
   - {fileID: 392212225}
   useTeams: 0
   teams: []
+  players: []
   roundText: {fileID: 301388341}
   gamemode: 0
+  winPanel: {fileID: 2113127125}
+  losePanel: {fileID: 586751830}
 --- !u!4 &1469240967
 Transform:
   m_ObjectHideFlags: 0

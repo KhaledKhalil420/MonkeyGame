@@ -29,7 +29,9 @@ public class spawnManager : NetworkBehaviour
     [Header("Game mode")]
     public gameMode gamemode;
 
-    
+    public GameObject winPanel;
+    public GameObject losePanel;
+
     public static spawnManager instance;
     
 
