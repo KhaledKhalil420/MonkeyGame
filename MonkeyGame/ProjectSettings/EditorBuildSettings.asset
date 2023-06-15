@@ -9,21 +9,24 @@ EditorBuildSettings:
     path: Assets/Lobby/lobby.unity
     guid: 3903138e070dbbb45ada2e7273548bd3
   - enabled: 1
-    path: Assets/Levels/Khaled.unity
+    path: Assets/Levels/k_level 1.unity
+    guid: 425b406d95f193c4488d8826341d6e50
+  - enabled: 1
+    path: Assets/e/Khaled.unity
     guid: 04f1d5e479b0430419a42ee10750a4b6
   - enabled: 1
-    path: Assets/Levels/SampleScene.unity
+    path: Assets/e/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Levels/weapons.unity
+    path: Assets/e/weapons.unity
     guid: c88e73e5a1b03684a9a3421158d0f04a
   - enabled: 1
-    path: Assets/Levels/level.unity
+    path: Assets/e/level.unity
     guid: 41300f1c2e6b44b4ba14de2df4387684
   - enabled: 1
-    path: Assets/Levels/level2.unity
+    path: Assets/e/level2.unity
     guid: 57ed91c138fe94f4a858fe1f17162861
   - enabled: 1
-    path: Assets/Levels/level3.unity
+    path: Assets/e/level3.unity
     guid: 1a4e8b6ef10122b46905f19d0c5f2104
   m_configObjects: {}

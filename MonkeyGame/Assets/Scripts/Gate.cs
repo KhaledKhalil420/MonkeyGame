@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Gate : MonoBehaviour, ITriggerable
 {
-    private bool IsOpen = false;
+    [SerializeField] private bool IsOpen = false;
     [SerializeField] private float LerpSpeed;
     [SerializeField] private Vector2 Offset;
     private Vector2 StartingPosition;

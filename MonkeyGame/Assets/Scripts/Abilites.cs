@@ -25,6 +25,7 @@ public class Abilites : EasyNetworkBehaviour
         if(other.CompareTag("Player"))
         {
             Player = other.gameObject;
+            StopAllCoroutines();
 
             switch(PowerUp)
             {

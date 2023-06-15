@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3623449038977037430}
   - component: {fileID: 4410497013956886275}
   - component: {fileID: 7889306823578188892}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: nameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,13 +146,13 @@ GameObject:
   - component: {fileID: 4240541320628419620}
   - component: {fileID: 4954468270425681264}
   - component: {fileID: 456589485415238304}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4240541320628419620
 Transform:
   m_ObjectHideFlags: 0
@@ -225,7 +225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1756773501314318176}
   - component: {fileID: 6352478547224616057}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,13 +309,13 @@ GameObject:
   m_Component:
   - component: {fileID: 2072542612962595827}
   - component: {fileID: 6167263998779739672}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: outLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2072542612962595827
 Transform:
   m_ObjectHideFlags: 0
@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 5677559155320322288}
   - component: {fileID: 1069047413335178930}
   - component: {fileID: 5078380634132844833}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -727,7 +727,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6665299240255902559}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -758,7 +758,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5952387116073048772}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WallPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,7 +789,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2994982817978072926}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -822,7 +822,7 @@ GameObject:
   - component: {fileID: 25472901190375464}
   - component: {fileID: 4430793321600830642}
   - component: {fileID: 5710628783270416787}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sprites
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -930,7 +930,7 @@ GameObject:
   - component: {fileID: 2040788175524555391}
   - component: {fileID: 1200574807836756860}
   - component: {fileID: 5550817443040090690}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: playerName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1088,6 +1088,10 @@ PrefabInstance:
     - target: {fileID: 8327953597404667368, guid: 996f1354e90283a4385aee2cc251deb6, type: 3}
       propertyPath: m_Name
       value: dust
+      objectReference: {fileID: 0}
+    - target: {fileID: 8327953597404667368, guid: 996f1354e90283a4385aee2cc251deb6, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
