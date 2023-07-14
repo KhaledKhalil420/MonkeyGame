@@ -27,7 +27,7 @@ public class Cannon : MonoBehaviour
         
 
         //Effect
-        ShootingParticle.Play();
+        //ShootingParticle.Play();
 
         //Sounds~
         

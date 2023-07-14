@@ -18,6 +18,11 @@ public class CameraFollow : MonoBehaviour
     public float ShakeTime;
     private Transform Cam;
 
+    private void Start()
+    {
+        Cam = GetComponentInChildren<Camera>().transform;
+    }
+
     private void Update()
     {
         if(Instance == null) Instance = this;
@@ -30,7 +35,6 @@ public class CameraFollow : MonoBehaviour
         if(Target != null) 
         return;
 
-        transform.parent = null;
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
 
         foreach(GameObject P in Players)
@@ -51,6 +55,7 @@ public class CameraFollow : MonoBehaviour
         
     public IEnumerator ShakeCamera(float Strength, float Duration)
     {
+        Debug.Log("s");
         float ElapsedTime = 0;
         Vector3 OriginalPos = Cam.localPosition;
 

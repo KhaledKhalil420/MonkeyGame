@@ -15,6 +15,7 @@ public class jumpingPad : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
+            StartCoroutine(CameraFollow.Instance.ShakeCamera(0.05f, 0.1f));
             other.GetComponent<PlayerMovement>().Jump(jumpForce);
             Anim.SetTrigger("Spring");
         }
